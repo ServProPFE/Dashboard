@@ -12,6 +12,8 @@ import OffersManagement from './pages/OffersManagement';
 import InvoicesManagement from './pages/InvoicesManagement';
 import PortfolioManagement from './pages/PortfolioManagement';
 import AvailabilityManagement from './pages/AvailabilityManagement';
+import ReviewsManagement from './pages/ReviewsManagement';
+import CommissionsManagement from './pages/CommissionsManagement';
 import './App.css';
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
                       <Route path="/portfolio" element={<PortfolioManagement />} />
                       <Route path="/availability" element={<AvailabilityManagement />} />
                       <Route path="/invoices" element={<InvoicesManagement />} />
+                      <Route path="/reviews" element={<ReviewsManagement />} />
+                      <Route path="/commissions" element={<CommissionsManagement />} />
                     </Routes>
                   </main>
                 </div>
