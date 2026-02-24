@@ -1,16 +1,50 @@
-# React + Vite
+# ServPro Dashboard (Provider/Admin)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Back-office web app for providers and admins to manage services, bookings, offers, invoices, portfolio, and availability.
 
-Currently, two official plugins are available:
+## Tech Stack
+- React 19 + Vite
+- React Router
+- Fetch-based API client
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Requirements
+- Node.js 18+
+- Backend running on `http://localhost:4000`
 
-## React Compiler
+## Setup
+```bash
+npm install
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Create `.env` (or copy `.env.example`) and set:
+```
+VITE_API_BASE_URL=http://localhost:4000
+```
 
-## Expanding the ESLint configuration
+## Run
+```bash
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Default dev URL: `http://localhost:5174`
+
+## Role Access
+- PROVIDER: services, bookings, offers, portfolio, availability, invoices (read-only)
+- ADMIN: services, bookings, offers, invoices (create/update/delete)
+
+## Key Routes
+- `/` Dashboard
+- `/services` Manage services
+- `/bookings` Manage booking statuses
+- `/offers` Manage offers (table view)
+- `/invoices` Invoices (admin can create)
+- `/portfolio` Portfolio (provider only)
+- `/availability` Availability (provider only)
+
+## API Notes
+- List endpoints return `{ items: [...] }`.
+- Booking status updates use `PATCH /bookings/:id/status`.
+
+## Common Issues
+- Forbidden on invoices: only ADMIN can create/update/delete.
+- 404 or HTML response: confirm `VITE_API_BASE_URL` is set to the backend port.
