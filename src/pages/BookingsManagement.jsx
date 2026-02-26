@@ -130,7 +130,7 @@ const BookingsManagement = () => {
                     onClick={() => setSelectedBooking(booking)}
                     className="btn-view"
                   >
-                    {t('bookings.details')}
+                    {t('bookings.viewDetails')}
                   </button>
                 </td>
               </tr>
