@@ -16,6 +16,7 @@ import PortfolioManagement from './pages/PortfolioManagement';
 import AvailabilityManagement from './pages/AvailabilityManagement';
 import ReviewsManagement from './pages/ReviewsManagement';
 import CommissionsManagement from './pages/CommissionsManagement';
+import TransactionsManagement from './pages/TransactionsManagement';
 import './App.css';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
                       <Route path="/invoices" element={<InvoicesManagement />} />
                       <Route path="/reviews" element={<ReviewsManagement />} />
                       <Route path="/commissions" element={<CommissionsManagement />} />
+                      <Route path="/transactions" element={<TransactionsManagement />} />
                     </Routes>
                   </main>
                 </div>

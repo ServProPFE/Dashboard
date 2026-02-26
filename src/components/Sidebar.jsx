@@ -97,6 +97,14 @@ const Sidebar = () => {
               <span className="icon">⭐</span>
               {t('nav.reviews')}
             </Link>
+
+            <Link
+              to="/transactions"
+              className={`nav-item ${isActive('/transactions') ? 'active' : ''}`}
+            >
+              <span className="icon">💳</span>
+              {t('nav.transactions')}
+            </Link>
           </>
         )}
 

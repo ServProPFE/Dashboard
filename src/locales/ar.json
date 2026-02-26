@@ -9,6 +9,7 @@
     "commissions": "العمولات",
     "reviews": "المراجعات",
     "invoices": "الفواتير",
+    "transactions": "المعاملات",
     "logout": "تسجيل الخروج"
   },
   "roles": {
@@ -234,6 +235,26 @@
       "amount": "مثال: 150"
     },
     "createError": "خطأ في إنشاء العمولة"
+  },
+  "transactions": {
+    "title": "إدارة المعاملات",
+    "filters": {
+      "all": "الكل",
+      "PENDING": "قيد الانتظار",
+      "SUCCESS": "نجحت",
+      "FAILED": "فشلت"
+    },
+    "table": {
+      "id": "المعرف",
+      "booking": "الحجز",
+      "amount": "المبلغ",
+      "method": "طريقة الدفع",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    },
+    "noData": "لا توجد معاملات",
+    "confirmDelete": "هل تريد حذف هذه المعاملة؟"
   },
   "bookingDetails": {
     "title": "تفاصيل الحجز",
