@@ -50,7 +50,7 @@ const InvoicesManagement = () => {
       console.error('Error fetching bookings:', err);
       return [];
     }
-};
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -64,11 +64,17 @@ const InvoicesManagement = () => {
     setError(null);
     setSaving(true);
 
+    if (!formData.booking) {
+      setError('Veuillez sélectionner une réservation');
+      setSaving(false);
+      return;
+    }
+
     try {
       const payload = {
         number: formData.number,
         total: Number(formData.total),
-        booking: formData.booking || undefined,
+        booking: formData.booking,
       };
 
       if (formData.issuedAt) {
@@ -113,7 +119,8 @@ const InvoicesManagement = () => {
           <thead>
             <tr>
               <th>Numéro</th>
-              <th>Réservation</th>
+              <th>Client</th>
+              <th>Service</th>
               <th>Montant</th>
               <th>Date d'émission</th>
               <th>Actions</th>
@@ -123,8 +130,9 @@ const InvoicesManagement = () => {
             {invoices.map(invoice => (
               <tr key={invoice._id}>
                 <td>{invoice.number || invoice._id.substring(0, 8)}</td>
-                <td>{(invoice.booking?._id || invoice.booking || 'N/A').toString().substring(0, 8)}</td>
-                <td>{invoice.total}</td>
+                <td>{invoice.booking ? (invoice.booking.client?.name || 'Client inconnu') : '⚠️ Pas de réservation'}</td>
+                <td>{invoice.booking ? (invoice.booking.service?.name || 'Service inconnu') : '⚠️ Pas de réservation'}</td>
+                <td>{invoice.total} TND</td>
                 <td>{new Date(invoice.issuedAt).toLocaleDateString()}</td>
                 <td className="actions">
                   <button className="btn-view">Voir</button>
@@ -176,16 +184,18 @@ const InvoicesManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="booking">Reservation (ID)</label>
+                <label htmlFor="booking">Reservation *</label>
                 <select
                   id="booking"
-                  name="booking"                  value={formData.booking}
+                  name="booking"
+                  value={formData.booking}
                   onChange={handleChange}
-                  placeholder="ID de la reservation"
+                  required
                 >
+                  <option value="">Sélectionner une réservation</option>
                   {bookings.map(booking => (
                     <option key={booking._id} value={booking._id}>
-                      {booking._id.substring(0, 8)}
+                      {booking.client?.name || 'Client'} - {booking.service?.name || 'Service'} ({booking._id.substring(0, 8)})
                     </option>
                   ))}
                 </select>

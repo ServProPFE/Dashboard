@@ -32,6 +32,7 @@ export const API_ENDPOINTS = {
   
   // Commissions
   COMMISSIONS: `${API_BASE_URL}/commissions`,
+  COMMISSION_BY_ID: (id) => `${API_BASE_URL}/commissions/${id}`,
   
   // Portfolios
   PORTFOLIOS: `${API_BASE_URL}/portfolios`,
