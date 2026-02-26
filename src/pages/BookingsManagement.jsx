@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import BookingDetailsModal from '../components/BookingDetailsModal';
 import '../styles/Bookings.css';
 
 const BookingsManagement = () => {
+  const { t } = useTranslation();
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,22 +56,22 @@ const BookingsManagement = () => {
       });
       fetchBookings();
     } catch (err) {
-      alert('Erreur lors de la mise à jour: ' + err.message);
+      alert(`${t('bookings.updateError')}: ${err.message}`);
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement des réservations...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   if (error) {
-    return <div className="error">Erreur: {error}</div>;
+    return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
   return (
     <div className="bookings-management">
       <div className="page-header">
-        <h1>Gestion des Réservations</h1>
+        <h1>{t('bookings.title')}</h1>
       </div>
 
       <div className="status-filters">
@@ -79,7 +81,7 @@ const BookingsManagement = () => {
             className={`filter-btn ${filter === status ? 'active' : ''}`}
             onClick={() => setFilter(status)}
           >
-            {status === 'ALL' ? 'Toutes' : status}
+            {status === 'ALL' ? t('bookings.filters.all') : t(`bookings.filters.${status}`)}
             <span className="count">
               {status === 'ALL'
                 ? bookings.length
@@ -93,13 +95,13 @@ const BookingsManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Service</th>
-              <th>Client</th>
-              <th>Date</th>
-              <th>Prix</th>
-              <th>Statut</th>
-              <th>Actions</th>
+              <th>{t('bookings.table.id')}</th>
+              <th>{t('bookings.table.service')}</th>
+              <th>{t('bookings.table.client')}</th>
+              <th>{t('bookings.table.date')}</th>
+              <th>{t('bookings.table.price')}</th>
+              <th>{t('bookings.table.status')}</th>
+              <th>{t('bookings.table.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -116,11 +118,11 @@ const BookingsManagement = () => {
                     onChange={(e) => handleStatusChange(booking._id, e.target.value)}
                     className={`status-select ${booking.status}`}
                   >
-                    <option value="PENDING">PENDING</option>
-                    <option value="CONFIRMED">CONFIRMED</option>
-                    <option value="IN_PROGRESS">IN_PROGRESS</option>
-                    <option value="DONE">DONE</option>
-                    <option value="CANCELLED">CANCELLED</option>
+                    <option value="PENDING">{t('bookings.filters.PENDING')}</option>
+                    <option value="CONFIRMED">{t('bookings.filters.CONFIRMED')}</option>
+                    <option value="IN_PROGRESS">{t('bookings.filters.IN_PROGRESS')}</option>
+                    <option value="DONE">{t('bookings.filters.DONE')}</option>
+                    <option value="CANCELLED">{t('bookings.filters.CANCELLED')}</option>
                   </select>
                 </td>
                 <td className="actions">
@@ -128,7 +130,7 @@ const BookingsManagement = () => {
                     onClick={() => setSelectedBooking(booking)}
                     className="btn-view"
                   >
-                    Détails
+                    {t('bookings.details')}
                   </button>
                 </td>
               </tr>
@@ -136,7 +138,7 @@ const BookingsManagement = () => {
           </tbody>
         </table>
         {filteredBookings.length === 0 && (
-          <p className="no-data">Aucune réservation trouvée</p>
+          <p className="no-data">{t('bookings.noData')}</p>
         )}
       </div>
 

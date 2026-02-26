@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Commissions.css';
 
 const CommissionsManagement = () => {
+  const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const [commissions, setCommissions] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -69,7 +71,7 @@ const CommissionsManagement = () => {
     setSaving(true);
 
     if (!formData.booking) {
-      setError('Veuillez sélectionner une réservation');
+      setError(t('commissions.selectBooking'));
       setSaving(false);
       return;
     }
@@ -86,41 +88,41 @@ const CommissionsManagement = () => {
       setShowCreateModal(false);
       fetchCommissions();
     } catch (err) {
-      setError(err.message || 'Erreur lors de la création');
+      setError(err.message || t('commissions.createError'));
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement des commissions...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   if (error) {
-    return <div className="error">Erreur: {error}</div>;
+    return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
   return (
     <div className="commissions-management">
       <div className="page-header">
-        <h1>Gestion des Commissions</h1>
+        <h1>{t('commissions.title')}</h1>
         {isAdmin && (
           <button
             className="btn-primary"
             onClick={() => setShowCreateModal(true)}
           >
-            + Nouvelle Commission
+            {t('commissions.new')}
           </button>
         )}
       </div>
 
       <div className="commissions-summary">
         <div className="summary-card">
-          <h3>Commission Totale</h3>
+          <h3>{t('commissions.totalCommission')}</h3>
           <p className="amount">{totalCommission.toFixed(2)} TND</p>
         </div>
         <div className="summary-card">
-          <h3>Nombre de Commissions</h3>
+          <h3>{t('commissions.count')}</h3>
           <p className="count">{commissions.length}</p>
         </div>
       </div>
@@ -129,12 +131,12 @@ const CommissionsManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Réservation</th>
-              <th>Fournisseur</th>
-              <th>Montant</th>
-              <th>Pourcentage</th>
-              <th>Date</th>
+              <th>{t('commissions.id')}</th>
+              <th>{t('commissions.booking')}</th>
+              <th>{t('commissions.provider')}</th>
+              <th>{t('commissions.amount')}</th>
+              <th>{t('commissions.percentage')}</th>
+              <th>{t('commissions.date')}</th>
             </tr>
           </thead>
           <tbody>
@@ -151,7 +153,7 @@ const CommissionsManagement = () => {
           </tbody>
         </table>
         {commissions.length === 0 && (
-          <p className="no-data">Aucune commission trouvée</p>
+          <p className="no-data">{t('commissions.noData')}</p>
         )}
       </div>
 
@@ -159,7 +161,7 @@ const CommissionsManagement = () => {
         <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Nouvelle Commission</h2>
+              <h2>{t('commissions.new')}</h2>
               <button className="close-btn" onClick={() => setShowCreateModal(false)}>
                 &times;
               </button>
@@ -168,7 +170,7 @@ const CommissionsManagement = () => {
               {error && <div className="error-message">{error}</div>}
               
               <div className="form-group">
-                <label htmlFor="booking">Réservation *</label>
+                <label htmlFor="booking">{t('commissions.fields.booking')} *</label>
                 <select
                   id="booking"
                   name="booking"
@@ -176,7 +178,7 @@ const CommissionsManagement = () => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Sélectionner une réservation</option>
+                  <option value="">{t('commissions.selectBooking')}</option>
                   {bookings.map(booking => (
                     <option key={booking._id} value={booking._id}>
                       {booking.client?.name || 'Client'} - {booking.service?.name || 'Service'} ({booking._id.substring(0, 8)})
@@ -186,7 +188,7 @@ const CommissionsManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="percentage">Pourcentage *</label>
+                <label htmlFor="percentage">{t('commissions.fields.percentage')} *</label>
                 <input
                   id="percentage"
                   name="percentage"
@@ -197,12 +199,12 @@ const CommissionsManagement = () => {
                   min="0"
                   max="100"
                   step="0.01"
-                  placeholder="Ex: 15"
+                  placeholder={t('commissions.placeholders.percentage')}
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="amount">Montant *</label>
+                <label htmlFor="amount">{t('commissions.fields.amount')} *</label>
                 <input
                   id="amount"
                   name="amount"
@@ -212,16 +214,16 @@ const CommissionsManagement = () => {
                   required
                   min="0"
                   step="0.01"
-                  placeholder="Ex: 150"
+                  placeholder={t('commissions.placeholders.amount')}
                 />
               </div>
 
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowCreateModal(false)}>
-                  Annuler
+                  {t('buttons.cancel')}
                 </button>
                 <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? 'Enregistrement...' : 'Créer'}
+                  {saving ? t('buttons.saving') : t('buttons.create')}
                 </button>
               </div>
             </form>

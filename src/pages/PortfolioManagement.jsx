@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Portfolio.css';
 
 const PortfolioManagement = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,14 +71,14 @@ const PortfolioManagement = () => {
       fetchPortfolios();
     } catch (err) {
       console.error('Error creating portfolio:', err);
-      setError(err.message || 'Erreur lors de la creation du portfolio');
+      setError(err.message || t('portfolio.createError'));
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Supprimer ce portfolio ?')) {
+    if (!window.confirm(t('portfolio.confirmDelete'))) {
       return;
     }
 
@@ -84,27 +86,28 @@ const PortfolioManagement = () => {
       await apiService.delete(API_ENDPOINTS.PORTFOLIO_BY_ID(id));
       fetchPortfolios();
     } catch (err) {
-      alert('Erreur lors de la suppression: ' + err.message);
+      console.error('Error deleting portfolio:', err);
+      alert(t('common.error', { message: err.message }));
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement du portfolio...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   return (
     <div className="portfolio-page">
       <div className="page-header">
-        <h1>Portfolio</h1>
+        <h1>{t('portfolio.title')}</h1>
       </div>
 
       {error && <div className="error-message">{error}</div>}
 
       <div className="portfolio-layout">
         <form className="portfolio-form" onSubmit={handleSubmit}>
-          <h2>Nouveau projet</h2>
+          <h2>{t('portfolio.newProject')}</h2>
           <div className="form-group">
-            <label htmlFor="title">Titre *</label>
+            <label htmlFor="title">{t('portfolio.fields.title')} *</label>
             <input
               id="title"
               name="title"
@@ -117,7 +120,7 @@ const PortfolioManagement = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">{t('portfolio.fields.description')}</label>
             <textarea
               id="description"
               name="description"
@@ -129,7 +132,7 @@ const PortfolioManagement = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="images">Images (URLs separees par virgule)</label>
+            <label htmlFor="images">{t('portfolio.fields.images')}</label>
             <textarea
               id="images"
               name="images"
@@ -141,20 +144,20 @@ const PortfolioManagement = () => {
           </div>
 
           <button type="submit" className="btn-primary" disabled={saving}>
-            {saving ? 'Enregistrement...' : 'Ajouter'}
+            {saving ? t('buttons.saving') : t('portfolio.add')}
           </button>
         </form>
 
         <div className="portfolio-list">
-          <h2>Mes projets</h2>
+          <h2>{t('portfolio.myProjects')}</h2>
           <div className="table-wrapper">
             <table>
               <thead>
                 <tr>
-                  <th>Titre</th>
-                  <th>Description</th>
-                  <th>Images</th>
-                  <th>Actions</th>
+                  <th>{t('portfolio.table.title')}</th>
+                  <th>{t('portfolio.table.description')}</th>
+                  <th>{t('portfolio.table.images')}</th>
+                  <th>{t('portfolio.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -168,7 +171,7 @@ const PortfolioManagement = () => {
                         className="btn-delete"
                         onClick={() => handleDelete(item._id)}
                       >
-                        Supprimer
+                        {t('buttons.delete')}
                       </button>
                     </td>
                   </tr>
@@ -176,7 +179,7 @@ const PortfolioManagement = () => {
               </tbody>
             </table>
             {items.length === 0 && (
-              <p className="no-data">Aucun projet trouve</p>
+              <p className="no-data">{t('portfolio.noData')}</p>
             )}
           </div>
         </div>

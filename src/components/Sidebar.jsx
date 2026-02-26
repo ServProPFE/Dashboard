@@ -1,11 +1,14 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import LanguageSwitcher from './LanguageSwitcher';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
   const { user, logout, isProvider, isAdmin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -20,7 +23,8 @@ const Sidebar = () => {
     <aside className="sidebar">
       <div className="sidebar-header">
         <h2>ServPro</h2>
-        <p className="user-role">{user?.type}</p>
+        <p className="user-role">{user?.type ? t(`roles.${user.type}`) : ''}</p>
+        <LanguageSwitcher />
       </div>
 
       <nav className="sidebar-nav">
@@ -29,7 +33,7 @@ const Sidebar = () => {
           className={`nav-item ${isActive('/') && location.pathname === '/' ? 'active' : ''}`}
         >
           <span className="icon">📊</span>
-          Dashboard
+          {t('nav.dashboard')}
         </Link>
 
         <Link
@@ -37,7 +41,7 @@ const Sidebar = () => {
           className={`nav-item ${isActive('/services') ? 'active' : ''}`}
         >
           <span className="icon">🛠️</span>
-          Services
+          {t('nav.services')}
         </Link>
 
         <Link
@@ -45,7 +49,7 @@ const Sidebar = () => {
           className={`nav-item ${isActive('/bookings') ? 'active' : ''}`}
         >
           <span className="icon">📅</span>
-          Réservations
+          {t('nav.bookings')}
         </Link>
 
         <Link
@@ -53,7 +57,7 @@ const Sidebar = () => {
           className={`nav-item ${isActive('/offers') ? 'active' : ''}`}
         >
           <span className="icon">🎁</span>
-          Offres
+          {t('nav.offers')}
         </Link>
 
         {isProvider && (
@@ -63,7 +67,7 @@ const Sidebar = () => {
               className={`nav-item ${isActive('/portfolio') ? 'active' : ''}`}
             >
               <span className="icon">📸</span>
-              Portfolio
+              {t('nav.portfolio')}
             </Link>
 
             <Link
@@ -71,7 +75,7 @@ const Sidebar = () => {
               className={`nav-item ${isActive('/availability') ? 'active' : ''}`}
             >
               <span className="icon">📆</span>
-              Disponibilité
+              {t('nav.availability')}
             </Link>
           </>
         )}
@@ -83,7 +87,7 @@ const Sidebar = () => {
               className={`nav-item ${isActive('/commissions') ? 'active' : ''}`}
             >
               <span className="icon">💰</span>
-              Commissions
+              {t('nav.commissions')}
             </Link>
 
             <Link
@@ -91,7 +95,7 @@ const Sidebar = () => {
               className={`nav-item ${isActive('/reviews') ? 'active' : ''}`}
             >
               <span className="icon">⭐</span>
-              Avis
+              {t('nav.reviews')}
             </Link>
           </>
         )}
@@ -101,7 +105,7 @@ const Sidebar = () => {
           className={`nav-item ${isActive('/invoices') ? 'active' : ''}`}
         >
           <span className="icon">🧾</span>
-          Factures
+          {t('nav.invoices')}
         </Link>
       </nav>
 
@@ -111,7 +115,7 @@ const Sidebar = () => {
           <p className="user-email">{user?.email}</p>
         </div>
         <button onClick={handleLogout} className="btn-logout">
-          Déconnexion
+          {t('nav.logout')}
         </button>
       </div>
     </aside>

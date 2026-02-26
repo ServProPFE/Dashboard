@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Invoices.css';
 
 const InvoicesManagement = () => {
+  const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const [invoices, setInvoices] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -65,7 +67,7 @@ const InvoicesManagement = () => {
     setSaving(true);
 
     if (!formData.booking) {
-      setError('Veuillez sélectionner une réservation');
+      setError(t('invoices.selectBookingError'));
       setSaving(false);
       return;
     }
@@ -86,30 +88,30 @@ const InvoicesManagement = () => {
       setShowCreateModal(false);
       fetchInvoices();
     } catch (err) {
-      setError(err.message || 'Erreur lors de la creation');
+      setError(err.message || t('invoices.saveError'));
     } finally {
       setSaving(false);
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement des factures...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   if (error) {
-    return <div className="error">Erreur: {error}</div>;
+    return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
   return (
     <div className="invoices-management">
       <div className="page-header">
-        <h1>Gestion des Factures</h1>
+        <h1>{t('invoices.title')}</h1>
         {isAdmin && (
           <button
             className="btn-primary"
             onClick={() => setShowCreateModal(true)}
           >
-            + Nouvelle Facture
+            + {t('invoices.new')}
           </button>
         )}
       </div>
@@ -118,32 +120,32 @@ const InvoicesManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>Numéro</th>
-              <th>Client</th>
-              <th>Service</th>
-              <th>Montant</th>
-              <th>Date d'émission</th>
-              <th>Actions</th>
+              <th>{t('invoices.table.number')}</th>
+              <th>{t('invoices.table.client')}</th>
+              <th>{t('invoices.table.service')}</th>
+              <th>{t('invoices.table.amount')}</th>
+              <th>{t('invoices.table.issuedAt')}</th>
+              <th>{t('invoices.table.actions')}</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map(invoice => (
               <tr key={invoice._id}>
                 <td>{invoice.number || invoice._id.substring(0, 8)}</td>
-                <td>{invoice.booking ? (invoice.booking.client?.name || 'Client inconnu') : '⚠️ Pas de réservation'}</td>
-                <td>{invoice.booking ? (invoice.booking.service?.name || 'Service inconnu') : '⚠️ Pas de réservation'}</td>
+                <td>{invoice.booking ? (invoice.booking.client?.name || t('invoices.unknownClient')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
+                <td>{invoice.booking ? (invoice.booking.service?.name || t('invoices.unknownService')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
                 <td>{invoice.total} TND</td>
                 <td>{new Date(invoice.issuedAt).toLocaleDateString()}</td>
                 <td className="actions">
-                  <button className="btn-view">Voir</button>
-                  <button className="btn-download">Télécharger</button>
+                  <button className="btn-view">{t('invoices.view')}</button>
+                  <button className="btn-download">{t('invoices.download')}</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         {invoices.length === 0 && (
-          <p className="no-data">Aucune facture trouvée</p>
+          <p className="no-data">{t('invoices.noData')}</p>
         )}
       </div>
 
@@ -151,14 +153,14 @@ const InvoicesManagement = () => {
         <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Nouvelle facture</h2>
+              <h2>{t('invoices.modalTitle')}</h2>
               <button className="close-btn" onClick={() => setShowCreateModal(false)}>
                 &times;
               </button>
             </div>
             <form className="modal-body" onSubmit={handleCreateInvoice}>
               <div className="form-group">
-                <label htmlFor="number">Numero *</label>
+                <label htmlFor="number">{t('invoices.number')} *</label>
                 <input
                   id="number"
                   name="number"
@@ -170,7 +172,7 @@ const InvoicesManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="total">Montant *</label>
+                <label htmlFor="total">{t('invoices.amount')} *</label>
                 <input
                   id="total"
                   name="total"
@@ -184,7 +186,7 @@ const InvoicesManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="booking">Reservation *</label>
+                <label htmlFor="booking">{t('invoices.booking')} *</label>
                 <select
                   id="booking"
                   name="booking"
@@ -192,17 +194,17 @@ const InvoicesManagement = () => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Sélectionner une réservation</option>
+                  <option value="">{t('invoices.selectBooking')}</option>
                   {bookings.map(booking => (
                     <option key={booking._id} value={booking._id}>
-                      {booking.client?.name || 'Client'} - {booking.service?.name || 'Service'} ({booking._id.substring(0, 8)})
+                      {booking.client?.name || t('invoices.unknownClient')} - {booking.service?.name || t('invoices.unknownService')} ({booking._id.substring(0, 8)})
                     </option>
                   ))}
                 </select>
               </div>
 
               <div className="form-group">
-                <label htmlFor="issuedAt">Date d'emission</label>
+                <label htmlFor="issuedAt">{t('invoices.issuedAt')}</label>
                 <input
                   id="issuedAt"
                   name="issuedAt"
@@ -214,10 +216,10 @@ const InvoicesManagement = () => {
 
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowCreateModal(false)}>
-                  Annuler
+                  {t('buttons.cancel')}
                 </button>
                 <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? 'Enregistrement...' : 'Creer'}
+                  {saving ? t('invoices.creating') : t('invoices.create')}
                 </button>
               </div>
             </form>

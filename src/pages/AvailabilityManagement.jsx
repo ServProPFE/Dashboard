@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Availability.css';
 
-const dayLabels = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+const dayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const AvailabilityManagement = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,14 +68,14 @@ const AvailabilityManagement = () => {
       fetchAvailability();
     } catch (err) {
       console.error('Error creating availability:', err);
-      setError(err.message || 'Erreur lors de la creation');
+      setError(err.message || t('availability.createError'));
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Supprimer cette disponibilite ?')) {
+    if (!window.confirm(t('availability.confirmDelete'))) {
       return;
     }
 
@@ -81,31 +83,32 @@ const AvailabilityManagement = () => {
       await apiService.delete(API_ENDPOINTS.AVAILABILITY_BY_ID(id));
       fetchAvailability();
     } catch (err) {
-      alert('Erreur lors de la suppression: ' + err.message);
+      console.error('Error deleting availability:', err);
+      alert(t('common.error', { message: err.message }));
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement des disponibilites...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   return (
     <div className="availability-page">
       <div className="page-header">
-        <h1>Disponibilite</h1>
+        <h1>{t('availability.title')}</h1>
       </div>
 
       {error && <div className="error-message">{error}</div>}
 
       <div className="availability-layout">
         <form className="availability-form" onSubmit={handleSubmit}>
-          <h2>Ajouter une disponibilite</h2>
+          <h2>{t('availability.addTitle')}</h2>
           <div className="form-group">
-            <label htmlFor="day">Jour</label>
+            <label htmlFor="day">{t('availability.fields.day')}</label>
             <select id="day" name="day" value={formData.day} onChange={handleChange}>
               {dayLabels.map((label, index) => (
                 <option key={label} value={index}>
-                  {label}
+                  {t(`availability.days.${index}`)}
                 </option>
               ))}
             </select>
@@ -113,7 +116,7 @@ const AvailabilityManagement = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="start">Debut</label>
+              <label htmlFor="start">{t('availability.fields.start')}</label>
               <input
                 id="start"
                 name="start"
@@ -125,7 +128,7 @@ const AvailabilityManagement = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="end">Fin</label>
+              <label htmlFor="end">{t('availability.fields.end')}</label>
               <input
                 id="end"
                 name="end"
@@ -138,26 +141,26 @@ const AvailabilityManagement = () => {
           </div>
 
           <button type="submit" className="btn-primary" disabled={saving}>
-            {saving ? 'Enregistrement...' : 'Ajouter'}
+            {saving ? t('buttons.saving') : t('availability.add')}
           </button>
         </form>
 
         <div className="availability-list">
-          <h2>Mes creneaux</h2>
+          <h2>{t('availability.mySlots')}</h2>
           <div className="table-wrapper">
             <table>
               <thead>
                 <tr>
-                  <th>Jour</th>
-                  <th>Debut</th>
-                  <th>Fin</th>
-                  <th>Actions</th>
+                  <th>{t('availability.table.day')}</th>
+                  <th>{t('availability.table.start')}</th>
+                  <th>{t('availability.table.end')}</th>
+                  <th>{t('availability.table.actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {items.map((slot) => (
                   <tr key={slot._id}>
-                    <td>{dayLabels[slot.day] || slot.day}</td>
+                    <td>{t(`availability.days.${slot.day}`) || slot.day}</td>
                     <td>{slot.start}</td>
                     <td>{slot.end}</td>
                     <td>
@@ -165,7 +168,7 @@ const AvailabilityManagement = () => {
                         className="btn-delete"
                         onClick={() => handleDelete(slot._id)}
                       >
-                        Supprimer
+                        {t('buttons.delete')}
                       </button>
                     </td>
                   </tr>
@@ -173,7 +176,7 @@ const AvailabilityManagement = () => {
               </tbody>
             </table>
             {items.length === 0 && (
-              <p className="no-data">Aucun creneau trouve</p>
+              <p className="no-data">{t('availability.noData')}</p>
             )}
           </div>
         </div>

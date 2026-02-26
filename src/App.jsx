@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Sidebar from './components/Sidebar';
@@ -17,6 +19,14 @@ import CommissionsManagement from './pages/CommissionsManagement';
 import './App.css';
 
 function App() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const isArabic = i18n.language?.startsWith('ar');
+    document.documentElement.lang = isArabic ? 'ar' : 'en';
+    document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+  }, [i18n.language]);
+
   return (
     <Router>
       <AuthProvider>

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import '../styles/Reviews.css';
 
 const ReviewsManagement = () => {
+  const { t } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +30,7 @@ const ReviewsManagement = () => {
   };
 
   const handleDeleteReview = async (reviewId) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cet avis?')) {
+    if (!window.confirm(t('reviews.confirmDelete'))) {
       return;
     }
 
@@ -36,22 +38,23 @@ const ReviewsManagement = () => {
       await apiService.delete(`${API_ENDPOINTS.REVIEW_BY_ID(reviewId)}`);
       fetchReviews();
     } catch (err) {
-      alert('Erreur lors de la suppression: ' + err.message);
+      console.error('Error deleting review:', err);
+      alert(t('common.error', { message: err.message }));
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement des avis...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   if (error) {
-    return <div className="error">Erreur: {error}</div>;
+    return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
   return (
     <div className="reviews-management">
       <div className="page-header">
-        <h1>Gestion des Avis</h1>
+        <h1>{t('reviews.title')}</h1>
       </div>
 
       <div className="reviews-table">
@@ -79,14 +82,14 @@ const ReviewsManagement = () => {
                   </span>
                   {review.score || 0}/5
                 </td>
-                <td className="comment">{review.comment || 'Sans commentaire'}</td>
+                <td className="comment">{review.comment || t('reviews.noComment')}</td>
                 <td>{new Date(review.createdAt).toLocaleDateString()}</td>
                 <td className="actions">
                   <button
                     onClick={() => handleDeleteReview(review._id)}
                     className="btn-delete"
                   >
-                    Supprimer
+                    {t('buttons.delete')}
                   </button>
                 </td>
               </tr>
@@ -94,7 +97,7 @@ const ReviewsManagement = () => {
           </tbody>
         </table>
         {reviews.length === 0 && (
-          <p className="no-data">Aucun avis trouvé</p>
+          <p className="no-data">{t('reviews.noData')}</p>
         )}
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_ENDPOINTS } from '../config/api';
@@ -6,6 +7,7 @@ import apiService from '../services/apiService';
 import '../styles/ServiceForm.css';
 
 const ServiceForm = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -40,7 +42,7 @@ const ServiceForm = () => {
         description: data.description || '',
       });
     } catch (err) {
-      setError('Erreur lors du chargement du service');
+      setError(t('serviceForm.loadError'));
     }
   };
 
@@ -69,7 +71,7 @@ const ServiceForm = () => {
       }
       navigate('/services');
     } catch (err) {
-      setError(err.message || 'Erreur lors de l\'enregistrement');
+      setError(err.message || t('serviceForm.saveError'));
     } finally {
       setLoading(false);
     }
@@ -78,14 +80,14 @@ const ServiceForm = () => {
   return (
     <div className="service-form-page">
       <div className="page-header">
-        <h1>{isEdit ? 'Modifier le Service' : 'Nouveau Service'}</h1>
+        <h1>{isEdit ? t('serviceForm.editTitle') : t('serviceForm.newTitle')}</h1>
       </div>
 
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
-          <label htmlFor="name">Nom du service *</label>
+          <label htmlFor="name">{t('serviceForm.name')} *</label>
           <input
             type="text"
             id="name"
@@ -93,12 +95,12 @@ const ServiceForm = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            placeholder="Ex: Installation climatisation"
+            placeholder={t('serviceForm.placeholderName')}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="category">Catégorie *</label>
+          <label htmlFor="category">{t('serviceForm.category')} *</label>
           <select
             id="category"
             name="category"
@@ -114,7 +116,7 @@ const ServiceForm = () => {
 
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="priceMin">Prix minimum (TND) *</label>
+            <label htmlFor="priceMin">{t('serviceForm.priceMin')} *</label>
             <input
               type="number"
               id="priceMin"
@@ -128,7 +130,7 @@ const ServiceForm = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="duration">Durée (minutes) *</label>
+            <label htmlFor="duration">{t('serviceForm.duration')} *</label>
             <input
               type="number"
               id="duration"
@@ -142,14 +144,14 @@ const ServiceForm = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">{t('serviceForm.description')}</label>
           <textarea
             id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
             rows="4"
-            placeholder="Description détaillée du service..."
+            placeholder={t('serviceForm.placeholderDescription')}
           />
         </div>
 
@@ -159,10 +161,10 @@ const ServiceForm = () => {
             onClick={() => navigate('/services')}
             className="btn-secondary"
           >
-            Annuler
+            {t('serviceForm.cancel')}
           </button>
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Enregistrement...' : 'Enregistrer'}
+            {loading ? t('serviceForm.saving') : t('serviceForm.save')}
           </button>
         </div>
       </form>

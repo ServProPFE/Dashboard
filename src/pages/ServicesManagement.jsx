@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import '../styles/Services.css';
 
 const ServicesManagement = () => {
+  const { t } = useTranslation();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,7 +32,7 @@ const ServicesManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce service ?')) {
+    if (!window.confirm(t('services.confirmDelete'))) {
       return;
     }
 
@@ -38,24 +40,25 @@ const ServicesManagement = () => {
       await apiService.delete(API_ENDPOINTS.SERVICE_BY_ID(id));
       fetchServices();
     } catch (err) {
-      alert('Erreur lors de la suppression: ' + err.message);
+      console.error('Error deleting service:', err);
+      alert(t('common.error', { message: err.message }));
     }
   };
 
   if (loading) {
-    return <div className="loading">Chargement des services...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   if (error) {
-    return <div className="error">Erreur: {error}</div>;
+    return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
   return (
     <div className="services-management">
       <div className="page-header">
-        <h1>Gestion des Services</h1>
+        <h1>{t('services.title')}</h1>
         <Link to="/services/new" className="btn-primary">
-          + Nouveau Service
+          + {t('services.new')}
         </Link>
       </div>
 
@@ -63,11 +66,11 @@ const ServicesManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>Nom</th>
-              <th>Catégorie</th>
-              <th>Prix</th>
-              <th>Durée</th>
-              <th>Actions</th>
+              <th>{t('services.table.name')}</th>
+              <th>{t('services.table.category')}</th>
+              <th>{t('services.table.price')}</th>
+              <th>{t('services.table.duration')}</th>
+              <th>{t('services.table.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -81,13 +84,13 @@ const ServicesManagement = () => {
                 <td>{service.duration} min</td>
                 <td className="actions">
                   <Link to={`/services/edit/${service._id}`} className="btn-edit">
-                    Modifier
+                    {t('buttons.edit')}
                   </Link>
                   <button
                     onClick={() => handleDelete(service._id)}
                     className="btn-delete"
                   >
-                    Supprimer
+                    {t('buttons.delete')}
                   </button>
                 </td>
               </tr>
@@ -95,7 +98,7 @@ const ServicesManagement = () => {
           </tbody>
         </table>
         {services.length === 0 && (
-          <p className="no-data">Aucun service trouvé</p>
+          <p className="no-data">{t('services.noData')}</p>
         )}
       </div>
     </div>

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import '../styles/Offers.css';
 
 const OffersManagement = () => {
+  const { t } = useTranslation();
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -57,7 +59,7 @@ const OffersManagement = () => {
       resetForm();
       fetchOffers();
     } catch (err) {
-      alert('Erreur: ' + err.message);
+      alert(t('common.error', { message: err.message }));
     }
   };
 
@@ -74,12 +76,12 @@ const OffersManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Supprimer cette offre ?')) return;
+    if (!window.confirm(t('offers.confirmDelete'))) return;
     try {
       await apiService.delete(API_ENDPOINTS.OFFER_BY_ID(id));
       fetchOffers();
     } catch (err) {
-      alert('Erreur: ' + err.message);
+      alert(t('common.error', { message: err.message }));
     }
   };
 
@@ -96,24 +98,24 @@ const OffersManagement = () => {
   };
 
   if (loading) {
-    return <div className="loading">Chargement des offres...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   return (
     <div className="offers-management">
       <div className="page-header">
-        <h1>Gestion des Offres</h1>
+        <h1>{t('offers.title')}</h1>
         <button onClick={() => setShowForm(true)} className="btn-primary">
-          + Nouvelle Offre
+          + {t('offers.new')}
         </button>
       </div>
 
       {showForm && (
         <div className="form-card">
-          <h2>{editingOffer ? 'Modifier l\'Offre' : 'Nouvelle Offre'}</h2>
+          <h2>{editingOffer ? t('offers.editTitle') : t('offers.newTitle')}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="title">Titre *</label>
+              <label htmlFor="title">{t('offers.fields.title')} *</label>
               <input
                 type="text"
                 id="title"
@@ -125,7 +127,7 @@ const OffersManagement = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="description">{t('offers.fields.description')}</label>
               <textarea
                 id="description"
                 name="description"
@@ -137,7 +139,7 @@ const OffersManagement = () => {
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="discount">Réduction (%) *</label>
+                <label htmlFor="discount">{t('offers.fields.discount')} *</label>
                 <input
                   type="number"
                   id="discount"
@@ -151,7 +153,7 @@ const OffersManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="basePrice">Prix de base (optionnel)</label>
+                <label htmlFor="basePrice">{t('offers.fields.basePrice')}</label>
                 <input
                   type="number"
                     id="basePrice"
@@ -160,12 +162,12 @@ const OffersManagement = () => {
                     onChange={handleChange}
                     min="0"
                     step="0.01"
-                    placeholder="Prix avant réduction"
+                    placeholder={t('offers.fields.basePrice')}
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="validUntil">Valide jusqu'au *</label>
+                <label htmlFor="validUntil">{t('offers.fields.validUntil')} *</label>
                 <input
                   type="date"
                   id="validUntil"
@@ -185,16 +187,16 @@ const OffersManagement = () => {
                   checked={formData.isActive}
                   onChange={handleChange}
                 />
-                Offre active
+                {t('offers.fields.active')}
               </label>
             </div>
 
             <div className="form-actions">
               <button type="button" onClick={resetForm} className="btn-secondary">
-                Annuler
+                {t('buttons.cancel')}
               </button>
               <button type="submit" className="btn-primary">
-                Enregistrer
+                {t('buttons.save')}
               </button>
             </div>
           </form>
@@ -205,13 +207,13 @@ const OffersManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>Titre</th>
-              <th>Description</th>
-              <th>Reduction</th>
-              <th>Prix de base</th>
-              <th>Valide jusqu'au</th>
-              <th>Statut</th>
-              <th>Actions</th>
+              <th>{t('offers.table.title')}</th>
+              <th>{t('offers.table.description')}</th>
+              <th>{t('offers.table.discount')}</th>
+              <th>{t('offers.table.basePrice')}</th>
+              <th>{t('offers.table.validUntil')}</th>
+              <th>{t('offers.table.status')}</th>
+              <th>{t('offers.table.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -224,22 +226,22 @@ const OffersManagement = () => {
                 <td>{new Date(offer.validUntil).toLocaleDateString()}</td>
                 <td>
                   <span className={`status-badge ${offer.isActive ? 'active' : 'inactive'}`}>
-                    {offer.isActive ? 'Active' : 'Inactive'}
+                    {offer.isActive ? t('offers.status.active') : t('offers.status.inactive')}
                   </span>
                 </td>
                 <td className="actions">
                   <button onClick={() => handleEdit(offer)} className="btn-edit">
-                    Modifier
+                    {t('buttons.edit')}
                   </button>
                   <button onClick={() => handleDelete(offer._id)} className="btn-delete">
-                    Supprimer
+                    {t('buttons.delete')}
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {offers.length === 0 && <p className="no-data">Aucune offre</p>}
+        {offers.length === 0 && <p className="no-data">{t('offers.noData')}</p>}
       </div>
     </div>
   );

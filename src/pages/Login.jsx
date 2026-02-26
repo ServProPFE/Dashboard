@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Auth.css';
 
 const Login = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -29,7 +31,7 @@ const Login = () => {
       await login(formData.email, formData.password);
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Erreur de connexion');
+      setError(err.message || t('auth.errors.login'));
     } finally {
       setLoading(false);
     }
@@ -40,14 +42,14 @@ const Login = () => {
       <div className="auth-card">
         <div className="auth-logo">
           <h1>ServPro Dashboard</h1>
-          <p>Espace Prestataire & Administration</p>
+          <p>{t('auth.subtitle')}</p>
         </div>
         
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('auth.email')}</label>
             <input
               type="email"
               id="email"
@@ -60,7 +62,7 @@ const Login = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">{t('auth.password')}</label>
             <input
               type="password"
               id="password"
@@ -73,14 +75,14 @@ const Login = () => {
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? t('auth.loginLoading') : t('auth.loginButton')}
           </button>
         </form>
 
         <div className="auth-footer">
           <p>
-            Pas encore de compte ?{' '}
-            <Link to="/register">Créer un compte</Link>
+            {t('auth.noAccount')}{' '}
+            <Link to="/register">{t('auth.signupLink')}</Link>
           </p>
         </div>
       </div>

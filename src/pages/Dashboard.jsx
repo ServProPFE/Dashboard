@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import { useAuth } from '../context/AuthContext';
@@ -6,6 +7,7 @@ import StatsCard from '../components/StatsCard';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { user, isProvider, isAdmin } = useAuth();
   const [stats, setStats] = useState({
     totalBookings: 0,
@@ -58,37 +60,37 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <div className="loading">Chargement du tableau de bord...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Tableau de Bord</h1>
-        <p>Bienvenue, {user?.name}</p>
+        <h1>{t('dashboard.title')}</h1>
+        <p>{t('dashboard.welcome', { name: user?.name })}</p>
       </div>
 
       <div className="stats-grid">
         <StatsCard
-          title="Réservations Totales"
+          title={t('dashboard.stats.totalBookings')}
           value={stats.totalBookings}
           icon="📊"
           color="blue"
         />
         <StatsCard
-          title="En Attente"
+          title={t('dashboard.stats.pending')}
           value={stats.pendingBookings}
           icon="⏳"
           color="yellow"
         />
         <StatsCard
-          title="Services"
+          title={t('dashboard.stats.services')}
           value={stats.totalServices}
           icon="🛠️"
           color="purple"
         />
         <StatsCard
-          title="Revenus"
+          title={t('dashboard.stats.revenue')}
           value={`${stats.totalRevenue} TND`}
           icon="💰"
           color="green"
@@ -96,16 +98,16 @@ const Dashboard = () => {
       </div>
 
       <div className="recent-bookings">
-        <h2>Réservations Récentes</h2>
+        <h2>{t('dashboard.recentTitle')}</h2>
         <div className="bookings-table">
           <table>
             <thead>
               <tr>
-                <th>Service</th>
-                <th>Client</th>
-                <th>Date</th>
-                <th>Statut</th>
-                <th>Prix</th>
+                <th>{t('dashboard.table.service')}</th>
+                <th>{t('dashboard.table.client')}</th>
+                <th>{t('dashboard.table.date')}</th>
+                <th>{t('dashboard.table.status')}</th>
+                <th>{t('dashboard.table.price')}</th>
               </tr>
             </thead>
             <tbody>
@@ -116,7 +118,7 @@ const Dashboard = () => {
                   <td>{new Date(booking.expectedAt).toLocaleDateString()}</td>
                   <td>
                     <span className={`status-badge ${booking.status}`}>
-                      {booking.status}
+                      {t(`bookings.filters.${booking.status}`)}
                     </span>
                   </td>
                   <td>{booking.totalPrice} {booking.currency}</td>
@@ -125,7 +127,7 @@ const Dashboard = () => {
             </tbody>
           </table>
           {recentBookings.length === 0 && (
-            <p className="no-data">Aucune réservation récente</p>
+            <p className="no-data">{t('dashboard.noRecent')}</p>
           )}
         </div>
       </div>
