@@ -102,6 +102,17 @@ const CommissionsManagement = () => {
     return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
+  const handleDeleteCommission = async (commissionId) => {
+    if (!window.confirm(t('commissions.deleteConfirm'))) {
+      return;
+    }
+    try {      await apiService.delete(API_ENDPOINTS.COMMISSION_BY_ID(commissionId));
+      fetchCommissions();
+    } catch (err) {
+      alert(`${t('commissions.deleteError')}: ${err.message}`);
+    }
+  };
+
   return (
     <div className="commissions-management">
       <div className="page-header">
@@ -148,6 +159,14 @@ const CommissionsManagement = () => {
                 <td>{commission.amount || 0} TND</td>
                 <td>{commission.percentage || 0}%</td>
                 <td>{new Date(commission.createdAt).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="btn-danger"
+                    onClick={() => handleDeleteCommission(commission._id)}
+                  >
+                    {t('buttons.delete')}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

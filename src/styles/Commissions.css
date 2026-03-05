@@ -48,6 +48,25 @@
   transition: background-color 0.2s;
 }
 
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+.btn-danger:disabled {
+  background-color: #e0aeb0;
+  cursor: not-allowed;
+}
 .btn-secondary:hover {
   background-color: #5a6268;
 }

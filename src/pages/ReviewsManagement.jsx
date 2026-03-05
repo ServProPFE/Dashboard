@@ -61,13 +61,13 @@ const ReviewsManagement = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Service</th>
-              <th>Qui a donné l'avis</th>
-              <th>Note</th>
-              <th>Commentaire</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>{t('common.id')}</th>
+              <th>{t('reviews.service')}</th>
+              <th>{t('reviews.reviewer')}</th>
+              <th>{t('reviews.rating')}</th>
+              <th>{t('reviews.comment')}</th>
+              <th>{t('common.date')}</th>
+              <th>{t('common.actions')}</th>
             </tr>
           </thead>
           <tbody>

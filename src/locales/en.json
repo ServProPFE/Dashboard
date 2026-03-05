@@ -136,6 +136,14 @@
   "invoices": {
     "title": "Invoices Management",
     "new": "New Invoice",
+    "modalTitle": "Create Invoice",
+    "number": "Number",
+    "amount": "Amount",
+    "booking": "Booking",
+    "issuedAt": "Issued date",
+    "creating": "Creating...",
+    "create": "Create",
+    "selectBookingError": "Please select a booking",
     "table": {
       "number": "Number",
       "client": "Client",
@@ -203,6 +211,10 @@
   },
   "reviews": {
     "title": "Reviews Management",
+    "service": "Service",
+    "reviewer": "Reviewer",
+    "rating": "Rating",
+    "comment": "Comment",
     "table": {
       "id": "ID",
       "service": "Service",
@@ -288,6 +300,9 @@
     "create": "Create"
   },
   "common": {
+    "id": "ID",
+    "date": "Date",
+    "actions": "Actions",
     "loading": "Loading...",
     "error": "Error: {{message}}",
     "yes": "Yes",

@@ -180,8 +180,9 @@ const OffersManagement = () => {
             </div>
 
             <div className="form-group checkbox-group">
-              <label>
+              <label htmlFor="isActive">
                 <input
+                  id="isActive"
                   type="checkbox"
                   name="isActive"
                   checked={formData.isActive}

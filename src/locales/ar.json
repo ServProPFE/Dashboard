@@ -136,6 +136,14 @@
   "invoices": {
     "title": "إدارة الفواتير",
     "new": "فاتورة جديدة",
+    "modalTitle": "إنشاء فاتورة",
+    "number": "الرقم",
+    "amount": "المبلغ",
+    "booking": "الحجز",
+    "issuedAt": "تاريخ الإصدار",
+    "creating": "جارٍ الإنشاء...",
+    "create": "إنشاء",
+    "selectBookingError": "يرجى اختيار حجز",
     "table": {
       "number": "الرقم",
       "client": "العميل",
@@ -199,6 +207,10 @@
   },
   "reviews": {
     "title": "إدارة المراجعات",
+    "service": "الخدمة",
+    "reviewer": "المراجع",
+    "rating": "التقييم",
+    "comment": "التعليق",
     "table": {
       "id": "المعرف",
       "service": "الخدمة",
@@ -284,6 +296,9 @@
     "create": "إنشاء"
   },
   "common": {
+    "id": "المعرف",
+    "date": "التاريخ",
+    "actions": "الإجراءات",
     "loading": "جارٍ التحميل...",
     "error": "خطأ: {{message}}",
     "yes": "نعم",
