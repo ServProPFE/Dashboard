@@ -117,7 +117,7 @@ const TransactionsManagement = () => {
                 <td>
                   {transaction.booking ? (
                     <span>
-                      {transaction.booking.service?.name || 'Service'} - {transaction.booking.provider?.name || 'Provider'}
+                      {transaction.booking.service?.name ? t(transaction.booking.service.name) : 'Service'} - {transaction.booking.provider?.name || 'Provider'}
                     </span>
                   ) : 'N/A'}
                 </td>

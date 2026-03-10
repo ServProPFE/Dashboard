@@ -133,7 +133,7 @@ const InvoicesManagement = () => {
               <tr key={invoice._id}>
                 <td>{invoice.number || invoice._id.substring(0, 8)}</td>
                 <td>{invoice.booking ? (invoice.booking.client?.name || t('invoices.unknownClient')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
-                <td>{invoice.booking ? (invoice.booking.service?.name || t('invoices.unknownService')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
+                <td>{invoice.booking ? (invoice.booking.service?.name ? t(invoice.booking.service.name) : t('invoices.unknownService')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
                 <td>{invoice.total} TND</td>
                 <td>{new Date(invoice.issuedAt).toLocaleDateString()}</td>
                 <td className="actions">
@@ -197,7 +197,7 @@ const InvoicesManagement = () => {
                   <option value="">{t('invoices.selectBooking')}</option>
                   {bookings.map(booking => (
                     <option key={booking._id} value={booking._id}>
-                      {booking.client?.name || t('invoices.unknownClient')} - {booking.service?.name || t('invoices.unknownService')} ({booking._id.substring(0, 8)})
+                      {booking.client?.name || t('invoices.unknownClient')} - {booking.service?.name ? t(booking.service.name) : t('invoices.unknownService')} ({booking._id.substring(0, 8)})
                     </option>
                   ))}
                 </select>

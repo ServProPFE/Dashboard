@@ -200,7 +200,7 @@ const CommissionsManagement = () => {
                   <option value="">{t('commissions.selectBooking')}</option>
                   {bookings.map(booking => (
                     <option key={booking._id} value={booking._id}>
-                      {booking.client?.name || 'Client'} - {booking.service?.name || 'Service'} ({booking._id.substring(0, 8)})
+                      {booking.client?.name || 'Client'} - {booking.service?.name ? t(booking.service.name) : 'Service'} ({booking._id.substring(0, 8)})
                     </option>
                   ))}
                 </select>

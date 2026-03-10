@@ -113,7 +113,7 @@ const Dashboard = () => {
             <tbody>
               {recentBookings.map(booking => (
                 <tr key={booking._id}>
-                  <td>{booking.service?.name || 'N/A'}</td>
+                  <td>{booking.service?.name ? t(booking.service.name) : 'N/A'}</td>
                   <td>{booking.client?.name || 'N/A'}</td>
                   <td>{new Date(booking.expectedAt).toLocaleDateString()}</td>
                   <td>

@@ -220,7 +220,7 @@ const OffersManagement = () => {
           <tbody>
             {offers.map(offer => (
               <tr key={offer._id}>
-                <td>{offer.title}</td>
+                <td>{t(offer.title)}</td>
                 <td>{offer.description || '-'}</td>
                 <td>{offer.discount}%</td>
                 <td>{offer.basePrice ?? '-'}</td>

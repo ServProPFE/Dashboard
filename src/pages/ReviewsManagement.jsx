@@ -74,7 +74,7 @@ const ReviewsManagement = () => {
             {reviews.map(review => (
               <tr key={review._id}>
                 <td>{review._id.substring(0, 8)}...</td>
-                <td>{review.reservation?.service?.name || 'N/A'}</td>
+                <td>{review.reservation?.service?.name ? t(review.reservation.service.name) : 'N/A'}</td>
                 <td>{review.reviewer?.name || 'N/A'}</td>
                 <td>
                   <span className="rating">

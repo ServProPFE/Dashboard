@@ -76,9 +76,9 @@ const ServicesManagement = () => {
           <tbody>
             {services.map(service => (
               <tr key={service._id}>
-                <td>{service.name}</td>
+                <td>{t(service.name)}</td>
                 <td>
-                  <span className="category-badge">{service.category}</span>
+                  <span className="category-badge">{t(`services.categories.${service.category}`)}</span>
                 </td>
                 <td>{service.priceMin} {service.currency}</td>
                 <td>{service.duration} min</td>

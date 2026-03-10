@@ -108,7 +108,7 @@ const BookingsManagement = () => {
             {filteredBookings.map(booking => (
               <tr key={booking._id}>
                 <td>{booking._id.substring(0, 8)}...</td>
-                <td>{booking.service?.name || 'N/A'}</td>
+                <td>{booking.service?.name ? t(booking.service.name) : 'N/A'}</td>
                 <td>{booking.client?.name || 'N/A'}</td>
                 <td>{new Date(booking.expectedAt).toLocaleString()}</td>
                 <td>{booking.totalPrice} {booking.currency}</td>

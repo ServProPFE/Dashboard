@@ -109,7 +109,7 @@ const ServiceForm = () => {
             required
           >
             {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>{t(`services.categories.${cat}`)}</option>
             ))}
           </select>
         </div>

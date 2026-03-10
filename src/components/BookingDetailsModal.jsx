@@ -18,11 +18,11 @@ const BookingDetailsModal = ({ booking, onClose, onUpdate }) => {
             <h3>{t('bookings.details.serviceInfo')}</h3>
             <div className="detail-row">
               <span className="label">{t('bookings.details.service')}:</span>
-              <span className="value">{booking.service?.name || 'N/A'}</span>
+              <span className="value">{booking.service?.name ? t(booking.service.name) : 'N/A'}</span>
             </div>
             <div className="detail-row">
               <span className="label">{t('bookings.details.category')}:</span>
-              <span className="value">{booking.service?.category || 'N/A'}</span>
+              <span className="value">{booking.service?.category ? t(`services.categories.${booking.service.category}`) : 'N/A'}</span>
             </div>
           </div>
 
