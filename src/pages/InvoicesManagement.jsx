@@ -94,6 +94,18 @@ const InvoicesManagement = () => {
     }
   };
 
+  const handleDeleteInvoice = async (invoiceId) => {
+    if (!window.confirm(t('invoices.deleteConfirm'))) {
+      return;
+    }
+    try {
+      await apiService.delete(API_ENDPOINTS.INVOICE_BY_ID(invoiceId));
+      fetchInvoices();
+    } catch (err) {
+      alert(`${t('invoices.deleteError')}: ${err.message}`);
+    }
+  };
+
   if (loading) {
     return <div className="loading">{t('common.loading')}</div>;
   }
@@ -139,6 +151,9 @@ const InvoicesManagement = () => {
                 <td className="actions">
                   <button className="btn-view">{t('invoices.view')}</button>
                   <button className="btn-download">{t('invoices.download')}</button>
+                  <button className="btn-delete" onClick={() => handleDeleteInvoice(invoice._id)}>
+                    {t('invoices.delete')}
+                  </button>
                 </td>
               </tr>
             ))}

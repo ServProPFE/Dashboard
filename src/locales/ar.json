@@ -171,6 +171,9 @@
     "unknownService": "خدمة غير معروفة",
     "view": "عرض",
     "download": "تحميل",
+    "delete": "حذف",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذه الفاتورة؟",
+    "deleteError": "خطأ في حذف الفاتورة",
     "selectBooking": "اختر حجزا",
     "loadError": "خطأ في تحميل الفواتير",
     "saveError": "خطأ في إنشاء الفاتورة"
