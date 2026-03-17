@@ -6,10 +6,15 @@
     "offers": "Offers",
     "portfolio": "Portfolio",
     "availability": "Availability",
+    "competences": "Competences",
+    "certifications": "Certifications",
+    "tracking": "Tracking",
     "commissions": "Commissions",
     "reviews": "Reviews",
     "invoices": "Invoices",
     "transactions": "Transactions",
+    "packages": "Packages",
+    "notations": "Notations",
     "logout": "Logout"
   },
   "roles": {
@@ -281,6 +286,110 @@
     },
     "noData": "No transactions found",
     "confirmDelete": "Are you sure you want to delete this transaction?"
+  },
+  "competences": {
+    "title": "Competences Management",
+    "new": "New Competence",
+    "fields": {
+      "serviceId": "Service",
+      "level": "Level",
+      "provider": "Provider"
+    },
+    "levels": {
+      "BEGINNER": "Beginner",
+      "INTERMEDIATE": "Intermediate",
+      "EXPERT": "Expert"
+    },
+    "table": {
+      "serviceId": "Service ID",
+      "level": "Level",
+      "provider": "Provider",
+      "actions": "Actions"
+    },
+    "confirmDelete": "Delete this competence?",
+    "noData": "No competences found",
+    "editTitle": "Edit Competence",
+    "newTitle": "Create Competence"
+  },
+  "certifications": {
+    "title": "Certifications Management",
+    "new": "New Certification",
+    "fields": {
+      "name": "Name",
+      "authority": "Authority",
+      "expiresAt": "Expiration Date",
+      "provider": "Provider"
+    },
+    "table": {
+      "name": "Name",
+      "authority": "Authority",
+      "expiresAt": "Expires At",
+      "provider": "Provider",
+      "actions": "Actions"
+    },
+    "confirmDelete": "Delete this certification?",
+    "noData": "No certifications found",
+    "editTitle": "Edit Certification",
+    "newTitle": "Create Certification"
+  },
+  "tracking": {
+    "title": "Tracking Management",
+    "new": "New Tracking Point",
+    "fields": {
+      "booking": "Booking",
+      "position": "Position",
+      "at": "Timestamp"
+    },
+    "table": {
+      "booking": "Booking",
+      "position": "Position",
+      "at": "Timestamp",
+      "actions": "Actions"
+    },
+    "confirmDelete": "Delete this tracking point?",
+    "noData": "No tracking records found",
+    "editTitle": "Edit Tracking",
+    "newTitle": "Create Tracking"
+  },
+  "packages": {
+    "title": "Packages Management",
+    "new": "New Package",
+    "fields": {
+      "name": "Name",
+      "months": "Months",
+      "numberVisits": "Number of Visits",
+      "monthlyPrice": "Monthly Price"
+    },
+    "table": {
+      "name": "Name",
+      "months": "Months",
+      "numberVisits": "Visits",
+      "monthlyPrice": "Monthly Price",
+      "actions": "Actions"
+    },
+    "confirmDelete": "Delete this package?",
+    "noData": "No packages found",
+    "editTitle": "Edit Package",
+    "newTitle": "Create Package"
+  },
+  "notations": {
+    "title": "Notations Management",
+    "new": "New Notation",
+    "fields": {
+      "average": "Average",
+      "total": "Total",
+      "provider": "Provider"
+    },
+    "table": {
+      "average": "Average",
+      "total": "Total",
+      "provider": "Provider",
+      "actions": "Actions"
+    },
+    "confirmDelete": "Delete this notation?",
+    "noData": "No notations found",
+    "editTitle": "Edit Notation",
+    "newTitle": "Create Notation"
   },
   "bookingDetails": {
     "title": "Booking Details",

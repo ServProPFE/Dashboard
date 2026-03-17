@@ -6,10 +6,15 @@
     "offers": "العروض",
     "portfolio": "المعرض",
     "availability": "التوفر",
+    "competences": "الكفاءات",
+    "certifications": "الشهادات",
+    "tracking": "التتبع",
     "commissions": "العمولات",
     "reviews": "المراجعات",
     "invoices": "الفواتير",
     "transactions": "المعاملات",
+    "packages": "الباقات",
+    "notations": "التقييمات",
     "logout": "تسجيل الخروج"
   },
   "roles": {
@@ -277,6 +282,110 @@
     },
     "noData": "لا توجد معاملات",
     "confirmDelete": "هل تريد حذف هذه المعاملة؟"
+  },
+  "competences": {
+    "title": "إدارة الكفاءات",
+    "new": "كفاءة جديدة",
+    "fields": {
+      "serviceId": "الخدمة",
+      "level": "المستوى",
+      "provider": "المزود"
+    },
+    "levels": {
+      "BEGINNER": "مبتدئ",
+      "INTERMEDIATE": "متوسط",
+      "EXPERT": "خبير"
+    },
+    "table": {
+      "serviceId": "معرف الخدمة",
+      "level": "المستوى",
+      "provider": "المزود",
+      "actions": "الإجراءات"
+    },
+    "confirmDelete": "هل تريد حذف هذه الكفاءة؟",
+    "noData": "لا توجد كفاءات",
+    "editTitle": "تعديل كفاءة",
+    "newTitle": "إنشاء كفاءة"
+  },
+  "certifications": {
+    "title": "إدارة الشهادات",
+    "new": "شهادة جديدة",
+    "fields": {
+      "name": "الاسم",
+      "authority": "الجهة المانحة",
+      "expiresAt": "تاريخ الانتهاء",
+      "provider": "المزود"
+    },
+    "table": {
+      "name": "الاسم",
+      "authority": "الجهة المانحة",
+      "expiresAt": "تاريخ الانتهاء",
+      "provider": "المزود",
+      "actions": "الإجراءات"
+    },
+    "confirmDelete": "هل تريد حذف هذه الشهادة؟",
+    "noData": "لا توجد شهادات",
+    "editTitle": "تعديل شهادة",
+    "newTitle": "إنشاء شهادة"
+  },
+  "tracking": {
+    "title": "إدارة التتبع",
+    "new": "نقطة تتبع جديدة",
+    "fields": {
+      "booking": "الحجز",
+      "position": "الموقع",
+      "at": "الوقت"
+    },
+    "table": {
+      "booking": "الحجز",
+      "position": "الموقع",
+      "at": "الوقت",
+      "actions": "الإجراءات"
+    },
+    "confirmDelete": "هل تريد حذف نقطة التتبع هذه؟",
+    "noData": "لا توجد سجلات تتبع",
+    "editTitle": "تعديل تتبع",
+    "newTitle": "إنشاء تتبع"
+  },
+  "packages": {
+    "title": "إدارة الباقات",
+    "new": "باقة جديدة",
+    "fields": {
+      "name": "الاسم",
+      "months": "الأشهر",
+      "numberVisits": "عدد الزيارات",
+      "monthlyPrice": "السعر الشهري"
+    },
+    "table": {
+      "name": "الاسم",
+      "months": "الأشهر",
+      "numberVisits": "الزيارات",
+      "monthlyPrice": "السعر الشهري",
+      "actions": "الإجراءات"
+    },
+    "confirmDelete": "هل تريد حذف هذه الباقة؟",
+    "noData": "لا توجد باقات",
+    "editTitle": "تعديل باقة",
+    "newTitle": "إنشاء باقة"
+  },
+  "notations": {
+    "title": "إدارة التقييمات",
+    "new": "تقييم جديد",
+    "fields": {
+      "average": "المتوسط",
+      "total": "الإجمالي",
+      "provider": "المزود"
+    },
+    "table": {
+      "average": "المتوسط",
+      "total": "الإجمالي",
+      "provider": "المزود",
+      "actions": "الإجراءات"
+    },
+    "confirmDelete": "هل تريد حذف هذا التقييم؟",
+    "noData": "لا توجد تقييمات",
+    "editTitle": "تعديل تقييم",
+    "newTitle": "إنشاء تقييم"
   },
   "bookingDetails": {
     "title": "تفاصيل الحجز",

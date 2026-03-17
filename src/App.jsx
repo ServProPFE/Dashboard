@@ -17,6 +17,11 @@ import AvailabilityManagement from './pages/AvailabilityManagement';
 import ReviewsManagement from './pages/ReviewsManagement';
 import CommissionsManagement from './pages/CommissionsManagement';
 import TransactionsManagement from './pages/TransactionsManagement';
+import CompetencesManagement from './pages/CompetencesManagement';
+import CertificationsManagement from './pages/CertificationsManagement';
+import TrackingManagement from './pages/TrackingManagement';
+import PackagesManagement from './pages/PackagesManagement';
+import NotationsManagement from './pages/NotationsManagement';
 import './App.css';
 
 function App() {
@@ -54,6 +59,11 @@ function App() {
                       <Route path="/reviews" element={<ReviewsManagement />} />
                       <Route path="/commissions" element={<CommissionsManagement />} />
                       <Route path="/transactions" element={<TransactionsManagement />} />
+                      <Route path="/competences" element={<CompetencesManagement />} />
+                      <Route path="/certifications" element={<CertificationsManagement />} />
+                      <Route path="/tracking" element={<TrackingManagement />} />
+                      <Route path="/packages" element={<PackagesManagement />} />
+                      <Route path="/notations" element={<NotationsManagement />} />
                     </Routes>
                   </main>
                 </div>

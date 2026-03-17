@@ -7,7 +7,7 @@ import '../styles/Portfolio.css';
 
 const PortfolioManagement = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +26,7 @@ const PortfolioManagement = () => {
     try {
       setLoading(true);
       const providerId = user?._id || user?.id;
-      const url = providerId
+      const url = providerId && !isAdmin
         ? `${API_ENDPOINTS.PORTFOLIOS}?providerId=${providerId}`
         : API_ENDPOINTS.PORTFOLIOS;
       const data = await apiService.get(url);
@@ -78,7 +78,7 @@ const PortfolioManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm(t('portfolio.confirmDelete'))) {
+    if (!globalThis.confirm(t('portfolio.confirmDelete'))) {
       return;
     }
 

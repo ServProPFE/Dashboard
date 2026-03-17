@@ -9,7 +9,7 @@ const dayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frid
 
 const AvailabilityManagement = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +28,7 @@ const AvailabilityManagement = () => {
     try {
       setLoading(true);
       const providerId = user?._id || user?.id;
-      const url = providerId
+      const url = providerId && !isAdmin
         ? `${API_ENDPOINTS.AVAILABILITY}?providerId=${providerId}`
         : API_ENDPOINTS.AVAILABILITY;
       const data = await apiService.get(url);
@@ -75,7 +75,7 @@ const AvailabilityManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm(t('availability.confirmDelete'))) {
+    if (!globalThis.confirm(t('availability.confirmDelete'))) {
       return;
     }
 

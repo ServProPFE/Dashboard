@@ -9,6 +9,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const canManageProviderResources = isProvider || isAdmin;
 
   const handleLogout = () => {
     logout();
@@ -18,6 +19,22 @@ const Sidebar = () => {
   const isActive = (path) => {
     return location.pathname === path || location.pathname.startsWith(path + '/');
   };
+
+  const providerLinks = [
+    { to: '/portfolio', icon: '📸', label: 'nav.portfolio' },
+    { to: '/availability', icon: '📆', label: 'nav.availability' },
+    { to: '/competences', icon: '🧠', label: 'nav.competences' },
+    { to: '/certifications', icon: '🎓', label: 'nav.certifications' },
+    { to: '/tracking', icon: '📍', label: 'nav.tracking' },
+  ];
+
+  const adminLinks = [
+    { to: '/commissions', icon: '💰', label: 'nav.commissions' },
+    { to: '/reviews', icon: '⭐', label: 'nav.reviews' },
+    { to: '/transactions', icon: '💳', label: 'nav.transactions' },
+    { to: '/packages', icon: '📦', label: 'nav.packages' },
+    { to: '/notations', icon: '🧮', label: 'nav.notations' },
+  ];
 
   return (
     <aside className="sidebar">
@@ -60,53 +77,27 @@ const Sidebar = () => {
           {t('nav.offers')}
         </Link>
 
-        {isProvider && (
-          <>
-            <Link
-              to="/portfolio"
-              className={`nav-item ${isActive('/portfolio') ? 'active' : ''}`}
-            >
-              <span className="icon">📸</span>
-              {t('nav.portfolio')}
-            </Link>
+        {canManageProviderResources && providerLinks.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className={`nav-item ${isActive(item.to) ? 'active' : ''}`}
+          >
+            <span className="icon">{item.icon}</span>
+            {t(item.label)}
+          </Link>
+        ))}
 
-            <Link
-              to="/availability"
-              className={`nav-item ${isActive('/availability') ? 'active' : ''}`}
-            >
-              <span className="icon">📆</span>
-              {t('nav.availability')}
-            </Link>
-          </>
-        )}
-
-        {isAdmin && (
-          <>
-            <Link
-              to="/commissions"
-              className={`nav-item ${isActive('/commissions') ? 'active' : ''}`}
-            >
-              <span className="icon">💰</span>
-              {t('nav.commissions')}
-            </Link>
-
-            <Link
-              to="/reviews"
-              className={`nav-item ${isActive('/reviews') ? 'active' : ''}`}
-            >
-              <span className="icon">⭐</span>
-              {t('nav.reviews')}
-            </Link>
-
-            <Link
-              to="/transactions"
-              className={`nav-item ${isActive('/transactions') ? 'active' : ''}`}
-            >
-              <span className="icon">💳</span>
-              {t('nav.transactions')}
-            </Link>
-          </>
-        )}
+        {isAdmin && adminLinks.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className={`nav-item ${isActive(item.to) ? 'active' : ''}`}
+          >
+            <span className="icon">{item.icon}</span>
+            {t(item.label)}
+          </Link>
+        ))}
 
         <Link
           to="/invoices"
