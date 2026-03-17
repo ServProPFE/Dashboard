@@ -17,7 +17,7 @@ const OffersManagement = () => {
     description: '',
     discount: '',
     validUntil: '',
-    isActive: true,
+    active: true,
   });
 
   useEffect(() => {
@@ -29,8 +29,14 @@ const OffersManagement = () => {
       setLoading(true);
       const data = await apiService.get(API_ENDPOINTS.OFFERS);
       // Backend returns { items: [...] }
-      const offersArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let offersArray = [];
+      if (Array.isArray(data.items)) {
+        offersArray = data.items;
+      } else if (Array.isArray(data)) {
+        offersArray = data;
+      }
       setOffers(offersArray);
+      setError(null);
     } catch (err) {
       console.error('Error fetching offers:', err);
       setError(err.message);
@@ -70,13 +76,14 @@ const OffersManagement = () => {
       description: offer.description,
       discount: offer.discount,
       validUntil: offer.validUntil.substring(0, 10),
-      isActive: offer.isActive,
+      active: offer.active ?? offer.isActive ?? true,
+      basePrice: offer.basePrice ?? '',
     });
     setShowForm(true);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm(t('offers.confirmDelete'))) return;
+    if (!globalThis.confirm(t('offers.confirmDelete'))) return;
     try {
       await apiService.delete(API_ENDPOINTS.OFFER_BY_ID(id));
       fetchOffers();
@@ -91,7 +98,8 @@ const OffersManagement = () => {
       description: '',
       discount: '',
       validUntil: '',
-      isActive: true,
+      active: true,
+      basePrice: '',
     });
     setEditingOffer(null);
     setShowForm(false);
@@ -99,6 +107,10 @@ const OffersManagement = () => {
 
   if (loading) {
     return <div className="loading">{t('common.loading')}</div>;
+  }
+
+  if (error) {
+    return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
   return (
@@ -180,12 +192,12 @@ const OffersManagement = () => {
             </div>
 
             <div className="form-group checkbox-group">
-              <label htmlFor="isActive">
+              <label htmlFor="active">
                 <input
-                  id="isActive"
+                  id="active"
                   type="checkbox"
-                  name="isActive"
-                  checked={formData.isActive}
+                  name="active"
+                  checked={formData.active}
                   onChange={handleChange}
                 />
                 {t('offers.fields.active')}
@@ -226,8 +238,8 @@ const OffersManagement = () => {
                 <td>{offer.basePrice ?? '-'}</td>
                 <td>{new Date(offer.validUntil).toLocaleDateString()}</td>
                 <td>
-                  <span className={`status-badge ${offer.isActive ? 'active' : 'inactive'}`}>
-                    {offer.isActive ? t('offers.status.active') : t('offers.status.inactive')}
+                  <span className={`status-badge ${(offer.active ?? offer.isActive) ? 'active' : 'inactive'}`}>
+                    {(offer.active ?? offer.isActive) ? t('offers.status.active') : t('offers.status.inactive')}
                   </span>
                 </td>
                 <td className="actions">

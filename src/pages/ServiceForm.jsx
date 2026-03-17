@@ -18,6 +18,7 @@ const ServiceForm = () => {
     category: 'PLOMBERIE',
     priceMin: '',
     duration: '',
+    currency: 'TND',
     description: '',
   });
   const [loading, setLoading] = useState(false);
@@ -39,9 +40,11 @@ const ServiceForm = () => {
         category: data.category,
         priceMin: data.priceMin,
         duration: data.duration,
+        currency: data.currency || 'TND',
         description: data.description || '',
       });
     } catch (err) {
+      console.warn('Unable to load service for editing:', err);
       setError(t('serviceForm.loadError'));
     }
   };
@@ -60,11 +63,16 @@ const ServiceForm = () => {
 
     try {
       if (isEdit) {
-        await apiService.put(API_ENDPOINTS.SERVICE_BY_ID(id), formData);
+        const payload = {
+          ...formData,
+          currency: formData.currency || 'TND',
+        };
+        await apiService.put(API_ENDPOINTS.SERVICE_BY_ID(id), payload);
       } else {
         // Add provider ID for new service
         const serviceData = {
           ...formData,
+          currency: formData.currency || 'TND',
           provider: user._id || user.id,
         };
         await apiService.post(API_ENDPOINTS.SERVICES, serviceData);
