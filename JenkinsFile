@@ -1,0 +1,24 @@
+pipeline{
+    agent any
+    stages{  
+        stage('Install Dependencies'){
+            steps{
+                echo 'Installing dependencies...'
+                bat 'npm install'
+            }
+        }
+        stage('Test'){
+            steps{
+                echo 'Running tests...'
+                bat 'npm run test'
+            }
+        }
+        stage('Dockerisation'){
+            steps{
+                echo 'Dockerising the application...'
+                // Add Dockerisation steps here
+                bat 'docker compose up -d'
+            }
+        }
+    }
+}
