@@ -56,11 +56,10 @@ pipeline {
             }
         }
     }
-
     post {
         always {
-            echo 'Stopping and removing dashboard container...'
-            bat 'docker compose down --remove-orphans'
+            echo 'Cleaning up containers...'
+            bat 'docker compose down'
         }
     }
 }
