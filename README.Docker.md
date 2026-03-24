@@ -1,22 +1,55 @@
-### Building and running your application
+# ServPro Dashboard - Docker Guide
 
-When you're ready, start your application by running:
-`docker compose up --build`.
+Guide Docker pour le back-office prestataire/admin.
 
-Your application will be available at http://localhost:5174.
+## Prerequis
 
-### Deploying your application to the cloud
+- Docker Desktop (Compose v2)
+- Backend ServPro disponible sur `http://localhost:4000`
 
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
+## Lancer le dashboard
 
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
+Depuis `ServProDashboard/`:
 
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
+```bash
+docker compose up --build
+```
 
-### References
-* [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
+Application disponible sur:
+- `http://localhost:5174`
+
+## Configuration API
+
+Par defaut, `compose.yaml` utilise:
+
+```env
+VITE_API_BASE_URL=http://localhost:4000
+```
+
+## Arreter
+
+```bash
+docker compose down
+```
+
+## Build image seule
+
+Depuis `ServProDashboard/`:
+
+```bash
+docker build -t servpro-dashboard:latest .
+docker run --rm -p 5174:5174 -e VITE_API_BASE_URL=http://localhost:4000 servpro-dashboard:latest
+```
+
+## Troubleshooting
+
+1. Erreurs d'acces / redirection login:
+- verifier que vous etes connecte avec le bon role
+- verifier la validite du token JWT
+
+2. App ne charge pas les donnees:
+- verifier le backend `http://localhost:4000`
+- verifier `VITE_API_BASE_URL`
+
+3. Port 5174 deja utilise:
+- changer le mapping de ports dans `compose.yaml`

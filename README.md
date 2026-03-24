@@ -21,7 +21,7 @@ Back-office web app for providers and admins to manage services, bookings, offer
 - 🌙 Auto language detection with localStorage persistence
 
 ## Requirements
-- Node.js 18+
+- Node.js 20+
 - Backend running on `http://localhost:4000`
 
 ## Setup
