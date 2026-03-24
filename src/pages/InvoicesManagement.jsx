@@ -95,14 +95,19 @@ const InvoicesManagement = () => {
   };
 
   const handleDeleteInvoice = async (invoiceId) => {
-    if (!window.confirm(t('invoices.deleteConfirm'))) {
+    if (!isAdmin) {
+      globalThis.alert(t('invoices.deleteError'));
+      return;
+    }
+
+    if (!globalThis.confirm(t('invoices.deleteConfirm'))) {
       return;
     }
     try {
       await apiService.delete(API_ENDPOINTS.INVOICE_BY_ID(invoiceId));
       fetchInvoices();
     } catch (err) {
-      alert(`${t('invoices.deleteError')}: ${err.message}`);
+      globalThis.alert(`${t('invoices.deleteError')}: ${err.message}`);
     }
   };
 
@@ -151,9 +156,11 @@ const InvoicesManagement = () => {
                 <td className="actions">
                   <button className="btn-view">{t('invoices.view')}</button>
                   <button className="btn-download">{t('invoices.download')}</button>
-                  <button className="btn-delete" onClick={() => handleDeleteInvoice(invoice._id)}>
-                    {t('invoices.delete')}
-                  </button>
+                  {isAdmin && (
+                    <button className="btn-delete" onClick={() => handleDeleteInvoice(invoice._id)}>
+                      {t('invoices.delete')}
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
