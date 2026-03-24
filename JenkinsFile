@@ -56,10 +56,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            echo 'Cleaning up containers...'
-            bat 'docker compose down'
-        }
-    }
 }
