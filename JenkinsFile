@@ -1,10 +1,5 @@
 pipeline{
-    agent{
-        docker{
-            image 'node:22-alpine'
-            args '-u root --workdir /app'
-        }
-    }
+    agent any
     stages{  
         stage('Install Dependencies'){
             steps{
