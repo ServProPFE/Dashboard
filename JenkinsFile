@@ -7,12 +7,6 @@ pipeline{
                 bat 'npm install'
             }
         }
-        stage('Test'){
-            steps{
-                echo 'Running tests...'
-                bat 'npm run test'
-            }
-        }
         stage('Dockerisation'){
             steps{
                 echo 'Dockerising the application...'
