@@ -22,7 +22,6 @@ import CertificationsManagement from './pages/CertificationsManagement';
 import TrackingManagement from './pages/TrackingManagement';
 import PackagesManagement from './pages/PackagesManagement';
 import NotationsManagement from './pages/NotationsManagement';
-import './App.css';
 
 function App() {
   const { i18n } = useTranslation();
@@ -43,9 +42,13 @@ function App() {
             path="/*"
             element={
               <ProtectedRoute>
-                <div className="app-layout">
+                <div className="relative min-h-screen lg:flex">
+                  <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
+                    <div className="absolute -left-24 top-0 h-80 w-80 rounded-full bg-sky-200/45 blur-3xl" />
+                    <div className="absolute right-0 top-14 h-72 w-72 rounded-full bg-emerald-200/40 blur-3xl" />
+                  </div>
                   <Sidebar />
-                  <main className="main-content">
+                  <main className="min-h-screen flex-1 p-4 sm:p-6 lg:p-8">
                     <Routes>
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/services" element={<ServicesManagement />} />

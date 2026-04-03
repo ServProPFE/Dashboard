@@ -4,11 +4,10 @@ import { API_ENDPOINTS } from '../config/api';
 import apiService from '../services/apiService';
 import { useAuth } from '../context/AuthContext';
 import StatsCard from '../components/StatsCard';
-import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const { t } = useTranslation();
-  const { user, isProvider, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [stats, setStats] = useState({
     totalBookings: 0,
     pendingBookings: 0,
@@ -17,6 +16,16 @@ const Dashboard = () => {
   });
   const [recentBookings, setRecentBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const normalizeItems = (payload) => {
+    if (Array.isArray(payload?.items)) {
+      return payload.items;
+    }
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+    return [];
+  };
 
   useEffect(() => {
     fetchDashboardData();
@@ -29,10 +38,9 @@ const Dashboard = () => {
       const servicesData = await apiService.get(API_ENDPOINTS.SERVICES);
 
       // Backend returns { items: [...] }
-      const bookingsArray = Array.isArray(bookingsData.items) ? bookingsData.items : (Array.isArray(bookingsData) ? bookingsData : []);
-      const servicesArray = Array.isArray(servicesData.items) ? servicesData.items : (Array.isArray(servicesData) ? servicesData : []);
+      const bookingsArray = normalizeItems(bookingsData);
+      const servicesArray = normalizeItems(servicesData);
 
-      // Calculate stats
       const totalBookings = bookingsArray.length;
       const pendingBookings = bookingsArray.filter(b => b.status === 'PENDING').length;
       const totalRevenue = bookingsArray
@@ -64,13 +72,14 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
-        <h1>{t('dashboard.title')}</h1>
-        <p>{t('dashboard.welcome', { name: user?.name })}</p>
+    <div className="mx-auto max-w-7xl space-y-8">
+      <div className="rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-xl shadow-slate-900/5">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-600">Operations Center</p>
+        <h1 className="display-title mt-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">{t('dashboard.title')}</h1>
+        <p className="mt-2 text-sm text-slate-600">{t('dashboard.welcome', { name: user?.name })}</p>
       </div>
 
-      <div className="stats-grid">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           title={t('dashboard.stats.totalBookings')}
           value={stats.totalBookings}
@@ -97,37 +106,50 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="recent-bookings">
-        <h2>{t('dashboard.recentTitle')}</h2>
-        <div className="bookings-table">
-          <table>
-            <thead>
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg shadow-slate-900/5">
+        <div className="border-b border-slate-200 bg-slate-50 px-5 py-4">
+          <h2 className="display-title text-xl font-bold text-slate-900">{t('dashboard.recentTitle')}</h2>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left text-sm">
+            <thead className="bg-slate-50">
               <tr>
-                <th>{t('dashboard.table.service')}</th>
-                <th>{t('dashboard.table.client')}</th>
-                <th>{t('dashboard.table.date')}</th>
-                <th>{t('dashboard.table.status')}</th>
-                <th>{t('dashboard.table.price')}</th>
+                <th className="px-5 py-3 font-semibold text-slate-600">{t('dashboard.table.service')}</th>
+                <th className="px-5 py-3 font-semibold text-slate-600">{t('dashboard.table.client')}</th>
+                <th className="px-5 py-3 font-semibold text-slate-600">{t('dashboard.table.date')}</th>
+                <th className="px-5 py-3 font-semibold text-slate-600">{t('dashboard.table.status')}</th>
+                <th className="px-5 py-3 font-semibold text-slate-600">{t('dashboard.table.price')}</th>
               </tr>
             </thead>
             <tbody>
-              {recentBookings.map(booking => (
-                <tr key={booking._id}>
-                  <td>{booking.service?.name ? t(booking.service.name) : 'N/A'}</td>
-                  <td>{booking.client?.name || 'N/A'}</td>
-                  <td>{new Date(booking.expectedAt).toLocaleDateString()}</td>
-                  <td>
-                    <span className={`status-badge ${booking.status}`}>
-                      {t(`bookings.filters.${booking.status}`)}
-                    </span>
-                  </td>
-                  <td>{booking.totalPrice} {booking.currency}</td>
-                </tr>
-              ))}
+              {recentBookings.map((booking) => {
+                const statusColor = {
+                  PENDING: 'bg-amber-100 text-amber-700',
+                  CONFIRMED: 'bg-sky-100 text-sky-700',
+                  DONE: 'bg-emerald-100 text-emerald-700',
+                  CANCELED: 'bg-rose-100 text-rose-700',
+                };
+
+                return (
+                  <tr key={booking._id} className="border-t border-slate-100">
+                    <td className="px-5 py-3 font-semibold text-slate-900">{booking.service?.name ? t(booking.service.name) : 'N/A'}</td>
+                    <td className="px-5 py-3 text-slate-700">{booking.client?.name || 'N/A'}</td>
+                    <td className="px-5 py-3 text-slate-700">{new Date(booking.expectedAt).toLocaleDateString()}</td>
+                    <td className="px-5 py-3">
+                      <span className={`rounded-full px-3 py-1 text-xs font-bold ${statusColor[booking.status] || 'bg-slate-100 text-slate-700'}`}>
+                        {t(`bookings.filters.${booking.status}`)}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3 font-semibold text-slate-900">{booking.totalPrice} {booking.currency}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+
           {recentBookings.length === 0 && (
-            <p className="no-data">{t('dashboard.noRecent')}</p>
+            <p className="p-6 text-center text-sm font-medium text-slate-500">{t('dashboard.noRecent')}</p>
           )}
         </div>
       </div>

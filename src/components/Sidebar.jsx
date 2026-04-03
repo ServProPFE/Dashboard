@@ -1,17 +1,19 @@
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import '../styles/Sidebar.css';
 
 const Sidebar = () => {
   const { user, logout, isProvider, isAdmin } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   const canManageProviderResources = isProvider || isAdmin;
 
   const handleLogout = () => {
+    setMenuOpen(false);
     logout();
     navigate('/login');
   };
@@ -36,88 +38,94 @@ const Sidebar = () => {
     { to: '/notations', icon: '🧮', label: 'nav.notations' },
   ];
 
+  const baseLink = 'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition';
+  const activeLink = 'bg-sky-500/20 text-white';
+  const idleLink = 'text-slate-300 hover:bg-white/10 hover:text-white';
+
+  const renderNavLink = (to, icon, label, exact = false) => {
+    const active = exact ? location.pathname === to : isActive(to);
+    return (
+      <Link key={to} to={to} className={`${baseLink} ${active ? activeLink : idleLink}`} onClick={() => setMenuOpen(false)}>
+        <span>{icon}</span>
+        <span>{t(label)}</span>
+      </Link>
+    );
+  };
+
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header">
-        <h2>ServPro</h2>
-        <p className="user-role">{user?.type ? t(`roles.${user.type}`) : ''}</p>
-        <LanguageSwitcher />
-      </div>
-
-      <nav className="sidebar-nav">
-        <Link
-          to="/"
-          className={`nav-item ${isActive('/') && location.pathname === '/' ? 'active' : ''}`}
+    <>
+      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200/70 bg-white/70 p-3 backdrop-blur lg:hidden">
+        <h2 className="display-title text-xl font-bold text-slate-900">
+          <span className="text-sky-600">Serv</span>
+          <span className="text-emerald-600">Pro</span>
+        </h2>
+        <button
+          type="button"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700"
+          onClick={() => setMenuOpen((prev) => !prev)}
         >
-          <span className="icon">📊</span>
-          {t('nav.dashboard')}
-        </Link>
-
-        <Link
-          to="/services"
-          className={`nav-item ${isActive('/services') ? 'active' : ''}`}
-        >
-          <span className="icon">🛠️</span>
-          {t('nav.services')}
-        </Link>
-
-        <Link
-          to="/bookings"
-          className={`nav-item ${isActive('/bookings') ? 'active' : ''}`}
-        >
-          <span className="icon">📅</span>
-          {t('nav.bookings')}
-        </Link>
-
-        <Link
-          to="/offers"
-          className={`nav-item ${isActive('/offers') ? 'active' : ''}`}
-        >
-          <span className="icon">🎁</span>
-          {t('nav.offers')}
-        </Link>
-
-        {canManageProviderResources && providerLinks.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className={`nav-item ${isActive(item.to) ? 'active' : ''}`}
-          >
-            <span className="icon">{item.icon}</span>
-            {t(item.label)}
-          </Link>
-        ))}
-
-        {isAdmin && adminLinks.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className={`nav-item ${isActive(item.to) ? 'active' : ''}`}
-          >
-            <span className="icon">{item.icon}</span>
-            {t(item.label)}
-          </Link>
-        ))}
-
-        <Link
-          to="/invoices"
-          className={`nav-item ${isActive('/invoices') ? 'active' : ''}`}
-        >
-          <span className="icon">🧾</span>
-          {t('nav.invoices')}
-        </Link>
-      </nav>
-
-      <div className="sidebar-footer">
-        <div className="user-info">
-          <p className="user-name">{user?.name}</p>
-          <p className="user-email">{user?.email}</p>
-        </div>
-        <button onClick={handleLogout} className="btn-logout">
-          {t('nav.logout')}
+          Menu
         </button>
       </div>
-    </aside>
+
+      <aside className={`${menuOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-50 w-72 border-r border-slate-700/40 bg-slate-950 p-4 shadow-2xl shadow-slate-900/40 transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0`}>
+        <div className="mb-4 flex items-center justify-between lg:justify-start">
+          <h2 className="display-title text-2xl font-bold text-white">
+            <span className="text-sky-300">Serv</span>
+            <span className="text-emerald-300">Pro</span>
+          </h2>
+          <button
+            type="button"
+            className="rounded-md border border-white/20 px-2 py-1 text-xs font-semibold text-white lg:hidden"
+            onClick={() => setMenuOpen(false)}
+          >
+            Close
+          </button>
+        </div>
+
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">{user?.type ? t(`roles.${user.type}`) : ''}</p>
+        <div className="mb-5">
+          <LanguageSwitcher />
+        </div>
+
+        <nav className="space-y-1 overflow-y-auto pr-1">
+          {renderNavLink('/', '📊', 'nav.dashboard', true)}
+          {renderNavLink('/services', '🛠️', 'nav.services')}
+          {renderNavLink('/bookings', '📅', 'nav.bookings')}
+          {renderNavLink('/offers', '🎁', 'nav.offers')}
+
+          {canManageProviderResources && providerLinks.map((item) => (
+            renderNavLink(item.to, item.icon, item.label)
+          ))}
+
+          {isAdmin && adminLinks.map((item) => (
+            renderNavLink(item.to, item.icon, item.label)
+          ))}
+
+          {renderNavLink('/invoices', '🧾', 'nav.invoices')}
+        </nav>
+
+        <div className="mt-5 rounded-xl border border-white/10 bg-white/5 p-3">
+          <p className="truncate text-sm font-semibold text-white">{user?.name}</p>
+          <p className="truncate text-xs text-slate-300">{user?.email}</p>
+          <button
+            onClick={handleLogout}
+            className="mt-3 w-full rounded-lg bg-rose-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-rose-600"
+          >
+            {t('nav.logout')}
+          </button>
+        </div>
+      </aside>
+
+      {menuOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 z-40 bg-slate-950/45 lg:hidden"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        />
+      )}
+    </>
   );
 };
 
