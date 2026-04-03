@@ -68,7 +68,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <aside className={`${menuOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-50 w-72 border-r border-slate-700/40 bg-slate-950 p-4 shadow-2xl shadow-slate-900/40 transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0`}>
+      <aside className={`${menuOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-slate-700/40 bg-slate-950 p-4 shadow-2xl shadow-slate-900/40 transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0`}>
         <div className="mb-4 flex items-center justify-between lg:justify-start">
           <h2 className="display-title text-2xl font-bold text-white">
             <span className="text-sky-300">Serv</span>
@@ -88,21 +88,29 @@ const Sidebar = () => {
           <LanguageSwitcher />
         </div>
 
-        <nav className="space-y-1 overflow-y-auto pr-1">
-          {renderNavLink('/', '📊', 'nav.dashboard', true)}
-          {renderNavLink('/services', '🛠️', 'nav.services')}
-          {renderNavLink('/bookings', '📅', 'nav.bookings')}
-          {renderNavLink('/offers', '🎁', 'nav.offers')}
+        <nav className="flex-1 space-y-4 overflow-y-auto pr-1">
+          <div className="space-y-1">
+            <p className="px-3 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">Main</p>
+            {renderNavLink('/', '📊', 'nav.dashboard', true)}
+            {renderNavLink('/services', '🛠️', 'nav.services')}
+            {renderNavLink('/bookings', '📅', 'nav.bookings')}
+            {renderNavLink('/offers', '🎁', 'nav.offers')}
+            {renderNavLink('/invoices', '🧾', 'nav.invoices')}
+          </div>
 
-          {canManageProviderResources && providerLinks.map((item) => (
-            renderNavLink(item.to, item.icon, item.label)
-          ))}
+          {canManageProviderResources && (
+            <div className="space-y-1">
+              <p className="px-3 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">Provider</p>
+              {providerLinks.map((item) => renderNavLink(item.to, item.icon, item.label))}
+            </div>
+          )}
 
-          {isAdmin && adminLinks.map((item) => (
-            renderNavLink(item.to, item.icon, item.label)
-          ))}
-
-          {renderNavLink('/invoices', '🧾', 'nav.invoices')}
+          {isAdmin && (
+            <div className="space-y-1">
+              <p className="px-3 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500">Admin</p>
+              {adminLinks.map((item) => renderNavLink(item.to, item.icon, item.label))}
+            </div>
+          )}
         </nav>
 
         <div className="mt-5 rounded-xl border border-white/10 bg-white/5 p-3">
