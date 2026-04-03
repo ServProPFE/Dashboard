@@ -86,11 +86,11 @@ pipeline {
                             $ErrorActionPreference = "Stop"
 
                             function Invoke-Kubectl {
-                                param([string]$Args)
-                                Write-Host "> kubectl $Args"
-                                & kubectl $Args.Split(' ')
+                                param([string]$KubectlArgs)
+                                Write-Host "> kubectl $KubectlArgs"
+                                & kubectl @($KubectlArgs.Split(' '))
                                 if ($LASTEXITCODE -ne 0) {
-                                    throw "kubectl failed: kubectl $Args"
+                                    throw "kubectl failed: kubectl $KubectlArgs"
                                 }
                             }
 
@@ -109,7 +109,7 @@ pipeline {
 
                     if (params.KUBECONFIG_CREDENTIAL_ID?.trim()) {
                         withCredentials([file(credentialsId: params.KUBECONFIG_CREDENTIAL_ID.trim(), variable: 'KUBECONFIG_FILE')]) {
-                            withEnv(["KUBECONFIG=${env.KUBECONFIG_FILE}"]) {
+                            withEnv(['KUBECONFIG=' + env.KUBECONFIG_FILE]) {
                                 runDeploy()
                             }
                         }
@@ -124,12 +124,12 @@ pipeline {
             when {
                 allOf {
                     expression { params.DEPLOY_VERCEL }
-                    expression { params.VERCEL_DASHBOARD_DEPLOY_HOOK_CREDENTIAL_ID?.trim() }
+                    expression { params.VERCEL_DEPLOY_HOOK_CREDENTIAL_ID?.trim() }
                 }
             }
             steps {
                 echo 'Triggering Vercel deployment for dashboard...'
-                withCredentials([string(credentialsId: params.VERCEL_DASHBOARD_DEPLOY_HOOK_CREDENTIAL_ID.trim(), variable: 'VERCEL_DASHBOARD_DEPLOY_HOOK_URL')]) {
+                withCredentials([string(credentialsId: params.VERCEL_DEPLOY_HOOK_CREDENTIAL_ID.trim(), variable: 'VERCEL_DEPLOY_HOOK_URL')]) {
                     powershell '''
                         $ErrorActionPreference = "Stop"
 
@@ -160,7 +160,7 @@ pipeline {
                             }
                         }
 
-                        Invoke-VercelDeployHook -Url $env:VERCEL_DASHBOARD_DEPLOY_HOOK_URL
+                        Invoke-VercelDeployHook -Url $env:VERCEL_DEPLOY_HOOK_URL
                     '''
                 }
             }
