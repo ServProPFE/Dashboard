@@ -124,12 +124,12 @@ pipeline {
             when {
                 allOf {
                     expression { params.DEPLOY_VERCEL }
-                    expression { params.VERCEL_DEPLOY_HOOK_CREDENTIAL_ID?.trim() }
+                    expression { params.VERCEL_DASHBOARD_DEPLOY_HOOK_CREDENTIAL_ID?.trim() }
                 }
             }
             steps {
                 echo 'Triggering Vercel deployment for dashboard...'
-                withCredentials([string(credentialsId: params.VERCEL_DEPLOY_HOOK_CREDENTIAL_ID.trim(), variable: 'VERCEL_DEPLOY_HOOK_URL')]) {
+                withCredentials([string(credentialsId: params.VERCEL_DASHBOARD_DEPLOY_HOOK_CREDENTIAL_ID.trim(), variable: 'VERCEL_DASHBOARD_DEPLOY_HOOK_URL')]) {
                     powershell '''
                         $ErrorActionPreference = "Stop"
 
@@ -160,7 +160,7 @@ pipeline {
                             }
                         }
 
-                        Invoke-VercelDeployHook -Url $env:VERCEL_DEPLOY_HOOK_URL
+                        Invoke-VercelDeployHook -Url $env:VERCEL_DASHBOARD_DEPLOY_HOOK_URL
                     '''
                 }
             }
