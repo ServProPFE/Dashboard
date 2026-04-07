@@ -179,8 +179,8 @@ const CompetencesManagement = () => {
     <div className="entity-management">
       <div className="page-header">
         <h1>{t('competences.title')}</h1>
-        <button className="btn-primary" onClick={() => setShowForm(true)}>
-          + {t('competences.new')}
+        <button className="btn-primary" onClick={() => setShowForm(true)} aria-label={t('competences.new')} title={t('competences.new')}>
+          +
         </button>
       </div>
 
@@ -226,8 +226,8 @@ const CompetencesManagement = () => {
               )}
 
               <div className="form-actions">
-                <button type="button" className="btn-secondary" onClick={resetForm}>{t('buttons.cancel')}</button>
-                <button type="submit" className="btn-primary">{t('buttons.save')}</button>
+                <button type="button" className="btn-secondary" onClick={resetForm} aria-label={t('buttons.cancel')} title={t('buttons.cancel')}>✕</button>
+                <button type="submit" className="btn-primary" aria-label={t('buttons.save')} title={t('buttons.save')}>💾</button>
               </div>
             </form>
           </div>
@@ -250,8 +250,8 @@ const CompetencesManagement = () => {
                   <td>{t(`competences.levels.${item.level}`)}</td>
                   <td>{getProviderLabel(item.provider)}</td>
                   <td className="actions">
-                    <button className="btn-edit" onClick={() => handleEdit(item)}>{t('buttons.edit')}</button>
-                    <button className="btn-delete" onClick={() => handleDelete(item._id)}>{t('buttons.delete')}</button>
+                    <button className="btn-edit" onClick={() => handleEdit(item)} aria-label={t('buttons.edit')} title={t('buttons.edit')}>✎</button>
+                    <button className="btn-delete" onClick={() => handleDelete(item._id)} aria-label={t('buttons.delete')} title={t('buttons.delete')}>🗑</button>
                   </td>
                 </tr>
               ))}

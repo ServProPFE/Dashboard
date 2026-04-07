@@ -73,8 +73,13 @@ const ServicesManagement = () => {
             <h1 className="display-title mt-2 text-3xl font-extrabold text-slate-900">{t('services.title')}</h1>
             <p className="mt-2 text-sm text-slate-600">{services.length} items</p>
           </div>
-          <Link to="/services/new" className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800">
-            + {t('services.new')}
+          <Link
+            to="/services/new"
+            aria-label={t('services.new')}
+            title={t('services.new')}
+            className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800"
+          >
+            +
           </Link>
         </div>
       </div>
@@ -102,14 +107,21 @@ const ServicesManagement = () => {
                   <td className="px-5 py-4 text-slate-700">{service.duration} min</td>
                   <td className="px-5 py-4">
                     <div className="flex flex-wrap gap-2">
-                      <Link to={`/services/edit/${service._id}`} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50">
-                        {t('buttons.edit')}
+                      <Link
+                        to={`/services/edit/${service._id}`}
+                        aria-label={t('buttons.edit')}
+                        title={t('buttons.edit')}
+                        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50"
+                      >
+                        ✎
                       </Link>
                       <button
                         onClick={() => handleDelete(service._id)}
+                        aria-label={t('buttons.delete')}
+                        title={t('buttons.delete')}
                         className="rounded-lg bg-rose-500 px-3 py-2 text-xs font-bold text-white transition hover:bg-rose-600"
                       >
-                        {t('buttons.delete')}
+                        🗑
                       </button>
                     </div>
                   </td>

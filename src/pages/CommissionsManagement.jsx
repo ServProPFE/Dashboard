@@ -32,7 +32,12 @@ const CommissionsManagement = () => {
     try {
       setLoading(true);
       const data = await apiService.get(API_ENDPOINTS.COMMISSIONS);
-      const commissionsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let commissionsArray = [];
+      if (Array.isArray(data?.items)) {
+        commissionsArray = data.items;
+      } else if (Array.isArray(data)) {
+        commissionsArray = data;
+      }
       setCommissions(commissionsArray);
       
       // Calculate total commissions
@@ -50,7 +55,12 @@ const CommissionsManagement = () => {
   const fetchBookings = async () => {
     try {
       const data = await apiService.get(API_ENDPOINTS.BOOKINGS);
-      const bookingsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let bookingsArray = [];
+      if (Array.isArray(data?.items)) {
+        bookingsArray = data.items;
+      } else if (Array.isArray(data)) {
+        bookingsArray = data;
+      }
       return bookingsArray;
     } catch (err) {
       console.error('Error fetching bookings:', err);
@@ -103,7 +113,7 @@ const CommissionsManagement = () => {
   }
 
   const handleDeleteCommission = async (commissionId) => {
-    if (!window.confirm(t('commissions.deleteConfirm'))) {
+    if (!globalThis.confirm(t('commissions.deleteConfirm'))) {
       return;
     }
     try {      await apiService.delete(API_ENDPOINTS.COMMISSION_BY_ID(commissionId));
@@ -121,8 +131,10 @@ const CommissionsManagement = () => {
           <button
             className="btn-primary"
             onClick={() => setShowCreateModal(true)}
+            aria-label={t('commissions.new')}
+            title={t('commissions.new')}
           >
-            {t('commissions.new')}
+            +
           </button>
         )}
       </div>
@@ -163,8 +175,10 @@ const CommissionsManagement = () => {
                   <button
                     className="btn-danger"
                     onClick={() => handleDeleteCommission(commission._id)}
+                    aria-label={t('buttons.delete')}
+                    title={t('buttons.delete')}
                   >
-                    {t('buttons.delete')}
+                    🗑
                   </button>
                 </td>
               </tr>
@@ -177,8 +191,8 @@ const CommissionsManagement = () => {
       </div>
 
       {showCreateModal && (
-        <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-overlay">
+          <div className="modal-content">
             <div className="modal-header">
               <h2>{t('commissions.new')}</h2>
               <button className="close-btn" onClick={() => setShowCreateModal(false)}>
@@ -238,11 +252,17 @@ const CommissionsManagement = () => {
               </div>
 
               <div className="modal-footer">
-                <button type="button" className="btn-secondary" onClick={() => setShowCreateModal(false)}>
-                  {t('buttons.cancel')}
+                <button type="button" className="btn-secondary" onClick={() => setShowCreateModal(false)} aria-label={t('buttons.cancel')} title={t('buttons.cancel')}>
+                  ✕
                 </button>
-                <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? t('buttons.saving') : t('buttons.create')}
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={saving}
+                  aria-label={saving ? t('buttons.saving') : t('buttons.create')}
+                  title={saving ? t('buttons.saving') : t('buttons.create')}
+                >
+                  {saving ? '⏳' : '💾'}
                 </button>
               </div>
             </form>

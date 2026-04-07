@@ -18,7 +18,12 @@ const ReviewsManagement = () => {
     try {
       setLoading(true);
       const data = await apiService.get(API_ENDPOINTS.REVIEWS);
-      const reviewsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let reviewsArray = [];
+      if (Array.isArray(data?.items)) {
+        reviewsArray = data.items;
+      } else if (Array.isArray(data)) {
+        reviewsArray = data;
+      }
       setReviews(reviewsArray);
     } catch (err) {
       console.error('Error fetching reviews:', err);
@@ -30,7 +35,7 @@ const ReviewsManagement = () => {
   };
 
   const handleDeleteReview = async (reviewId) => {
-    if (!window.confirm(t('reviews.confirmDelete'))) {
+    if (!globalThis.confirm(t('reviews.confirmDelete'))) {
       return;
     }
 
@@ -88,8 +93,10 @@ const ReviewsManagement = () => {
                   <button
                     onClick={() => handleDeleteReview(review._id)}
                     className="btn-delete"
+                    aria-label={t('buttons.delete')}
+                    title={t('buttons.delete')}
                   >
-                    {t('buttons.delete')}
+                    🗑
                   </button>
                 </td>
               </tr>

@@ -23,7 +23,12 @@ const TransactionsManagement = () => {
     try {
       setLoading(true);
       const data = await apiService.get(API_ENDPOINTS.TRANSACTIONS);
-      const transactionsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let transactionsArray = [];
+      if (Array.isArray(data?.items)) {
+        transactionsArray = data.items;
+      } else if (Array.isArray(data)) {
+        transactionsArray = data;
+      }
       setTransactions(transactionsArray);
     } catch (err) {
       console.error('Error fetching transactions:', err);
@@ -50,7 +55,7 @@ const TransactionsManagement = () => {
   const handleDelete = async (transactionId) => {
     if (!isAdmin) return;
     
-    if (!window.confirm(t('transactions.confirmDelete'))) {
+    if (!globalThis.confirm(t('transactions.confirmDelete'))) {
       return;
     }
 
@@ -150,8 +155,10 @@ const TransactionsManagement = () => {
                     <button
                       onClick={() => handleDelete(transaction._id)}
                       className="btn-delete"
+                      aria-label={t('buttons.delete')}
+                      title={t('buttons.delete')}
                     >
-                      {t('buttons.delete')}
+                      🗑
                     </button>
                   </td>
                 )}

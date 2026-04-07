@@ -167,12 +167,20 @@ const ServiceForm = () => {
           <button
             type="button"
             onClick={() => navigate('/services')}
+            aria-label={t('serviceForm.cancel')}
+            title={t('serviceForm.cancel')}
             className="btn-secondary"
           >
-            {t('serviceForm.cancel')}
+            ✕
           </button>
-          <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? t('serviceForm.saving') : t('serviceForm.save')}
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={loading}
+            aria-label={loading ? t('serviceForm.saving') : t('serviceForm.save')}
+            title={loading ? t('serviceForm.saving') : t('serviceForm.save')}
+          >
+            {loading ? '⏳' : '💾'}
           </button>
         </div>
       </form>

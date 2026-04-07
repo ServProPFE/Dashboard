@@ -29,7 +29,12 @@ const BookingsManagement = () => {
       setLoading(true);
       const data = await apiService.get(API_ENDPOINTS.BOOKINGS);
       // Backend returns { items: [...] }
-      const bookingsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let bookingsArray = [];
+      if (Array.isArray(data?.items)) {
+        bookingsArray = data.items;
+      } else if (Array.isArray(data)) {
+        bookingsArray = data;
+      }
       setBookings(bookingsArray);
     } catch (err) {
       console.error('Error fetching bookings:', err);
@@ -129,8 +134,10 @@ const BookingsManagement = () => {
                   <button
                     onClick={() => setSelectedBooking(booking)}
                     className="btn-view"
+                    aria-label={t('bookings.viewDetails')}
+                    title={t('bookings.viewDetails')}
                   >
-                    {t('bookings.viewDetails')}
+                    👁
                   </button>
                 </td>
               </tr>

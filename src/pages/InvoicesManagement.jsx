@@ -31,7 +31,12 @@ const InvoicesManagement = () => {
       setLoading(true);
       const data = await apiService.get(API_ENDPOINTS.INVOICES);
       // Backend returns { items: [...] }
-      const invoicesArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let invoicesArray = [];
+      if (Array.isArray(data?.items)) {
+        invoicesArray = data.items;
+      } else if (Array.isArray(data)) {
+        invoicesArray = data;
+      }
       setInvoices(invoicesArray);
     } catch (err) {
       console.error('Error fetching invoices:', err);
@@ -45,9 +50,14 @@ const InvoicesManagement = () => {
   const fetchBookings = async () => {
     try {
       const data = await apiService.get(API_ENDPOINTS.BOOKINGS);
-        // Backend returns { items: [...] }
-        const bookingsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
-        return bookingsArray;
+      // Backend returns { items: [...] }
+      let bookingsArray = [];
+      if (Array.isArray(data?.items)) {
+        bookingsArray = data.items;
+      } else if (Array.isArray(data)) {
+        bookingsArray = data;
+      }
+      return bookingsArray;
     } catch (err) {
       console.error('Error fetching bookings:', err);
       return [];
@@ -119,6 +129,18 @@ const InvoicesManagement = () => {
     return <div className="error">{t('common.error', { message: error })}</div>;
   }
 
+  const getInvoiceServiceLabel = (invoice) => {
+    if (!invoice.booking) {
+      return `⚠️ ${t('invoices.missingBooking')}`;
+    }
+
+    if (invoice.booking.service?.name) {
+      return t(invoice.booking.service.name);
+    }
+
+    return t('invoices.unknownService');
+  };
+
   return (
     <div className="invoices-management">
       <div className="page-header">
@@ -127,8 +149,10 @@ const InvoicesManagement = () => {
           <button
             className="btn-primary"
             onClick={() => setShowCreateModal(true)}
+            aria-label={t('invoices.new')}
+            title={t('invoices.new')}
           >
-            + {t('invoices.new')}
+            +
           </button>
         )}
       </div>
@@ -150,15 +174,15 @@ const InvoicesManagement = () => {
               <tr key={invoice._id}>
                 <td>{invoice.number || invoice._id.substring(0, 8)}</td>
                 <td>{invoice.booking ? (invoice.booking.client?.name || t('invoices.unknownClient')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
-                <td>{invoice.booking ? (invoice.booking.service?.name ? t(invoice.booking.service.name) : t('invoices.unknownService')) : `⚠️ ${t('invoices.missingBooking')}`}</td>
+                <td>{getInvoiceServiceLabel(invoice)}</td>
                 <td>{invoice.total} TND</td>
                 <td>{new Date(invoice.issuedAt).toLocaleDateString()}</td>
                 <td className="actions">
-                  <button className="btn-view">{t('invoices.view')}</button>
-                  <button className="btn-download">{t('invoices.download')}</button>
+                  <button className="btn-view" aria-label={t('invoices.view')} title={t('invoices.view')}>👁</button>
+                  <button className="btn-download" aria-label={t('invoices.download')} title={t('invoices.download')}>⬇</button>
                   {isAdmin && (
-                    <button className="btn-delete" onClick={() => handleDeleteInvoice(invoice._id)}>
-                      {t('invoices.delete')}
+                    <button className="btn-delete" onClick={() => handleDeleteInvoice(invoice._id)} aria-label={t('invoices.delete')} title={t('invoices.delete')}>
+                      🗑
                     </button>
                   )}
                 </td>
@@ -172,8 +196,8 @@ const InvoicesManagement = () => {
       </div>
 
       {showCreateModal && (
-        <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-overlay">
+          <div className="modal-content">
             <div className="modal-header">
               <h2>{t('invoices.modalTitle')}</h2>
               <button className="close-btn" onClick={() => setShowCreateModal(false)}>
@@ -237,11 +261,17 @@ const InvoicesManagement = () => {
               </div>
 
               <div className="modal-footer">
-                <button type="button" className="btn-secondary" onClick={() => setShowCreateModal(false)}>
-                  {t('buttons.cancel')}
+                <button type="button" className="btn-secondary" onClick={() => setShowCreateModal(false)} aria-label={t('buttons.cancel')} title={t('buttons.cancel')}>
+                  ✕
                 </button>
-                <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? t('invoices.creating') : t('invoices.create')}
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={saving}
+                  aria-label={saving ? t('invoices.creating') : t('invoices.create')}
+                  title={saving ? t('invoices.creating') : t('invoices.create')}
+                >
+                  {saving ? '⏳' : '💾'}
                 </button>
               </div>
             </form>

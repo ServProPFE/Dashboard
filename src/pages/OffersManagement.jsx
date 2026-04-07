@@ -117,8 +117,13 @@ const OffersManagement = () => {
     <div className="offers-management">
       <div className="page-header">
         <h1>{t('offers.title')}</h1>
-        <button onClick={() => setShowForm(true)} className="btn-primary">
-          + {t('offers.new')}
+        <button
+          onClick={() => setShowForm(true)}
+          className="btn-primary"
+          aria-label={t('offers.new')}
+          title={t('offers.new')}
+        >
+          +
         </button>
       </div>
 
@@ -205,11 +210,22 @@ const OffersManagement = () => {
             </div>
 
             <div className="form-actions">
-              <button type="button" onClick={resetForm} className="btn-secondary">
-                {t('buttons.cancel')}
+              <button
+                type="button"
+                onClick={resetForm}
+                className="btn-secondary"
+                aria-label={t('buttons.cancel')}
+                title={t('buttons.cancel')}
+              >
+                ✕
               </button>
-              <button type="submit" className="btn-primary">
-                {t('buttons.save')}
+              <button
+                type="submit"
+                className="btn-primary"
+                aria-label={t('buttons.save')}
+                title={t('buttons.save')}
+              >
+                💾
               </button>
             </div>
           </form>
@@ -243,11 +259,21 @@ const OffersManagement = () => {
                   </span>
                 </td>
                 <td className="actions">
-                  <button onClick={() => handleEdit(offer)} className="btn-edit">
-                    {t('buttons.edit')}
+                  <button
+                    onClick={() => handleEdit(offer)}
+                    className="btn-edit"
+                    aria-label={t('buttons.edit')}
+                    title={t('buttons.edit')}
+                  >
+                    ✎
                   </button>
-                  <button onClick={() => handleDelete(offer._id)} className="btn-delete">
-                    {t('buttons.delete')}
+                  <button
+                    onClick={() => handleDelete(offer._id)}
+                    className="btn-delete"
+                    aria-label={t('buttons.delete')}
+                    title={t('buttons.delete')}
+                  >
+                    🗑
                   </button>
                 </td>
               </tr>

@@ -30,7 +30,12 @@ const PortfolioManagement = () => {
         ? `${API_ENDPOINTS.PORTFOLIOS}?providerId=${providerId}`
         : API_ENDPOINTS.PORTFOLIOS;
       const data = await apiService.get(url);
-      const itemsArray = Array.isArray(data.items) ? data.items : (Array.isArray(data) ? data : []);
+      let itemsArray = [];
+      if (Array.isArray(data?.items)) {
+        itemsArray = data.items;
+      } else if (Array.isArray(data)) {
+        itemsArray = data;
+      }
       setItems(itemsArray);
     } catch (err) {
       console.error('Error fetching portfolios:', err);
@@ -143,8 +148,14 @@ const PortfolioManagement = () => {
             />
           </div>
 
-          <button type="submit" className="btn-primary" disabled={saving}>
-            {saving ? t('buttons.saving') : t('portfolio.add')}
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={saving}
+            aria-label={saving ? t('buttons.saving') : t('portfolio.add')}
+            title={saving ? t('buttons.saving') : t('portfolio.add')}
+          >
+            {saving ? '⏳' : '+'}
           </button>
         </form>
 
@@ -170,8 +181,10 @@ const PortfolioManagement = () => {
                       <button
                         className="btn-delete"
                         onClick={() => handleDelete(item._id)}
+                        aria-label={t('buttons.delete')}
+                        title={t('buttons.delete')}
                       >
-                        {t('buttons.delete')}
+                        🗑
                       </button>
                     </td>
                   </tr>
