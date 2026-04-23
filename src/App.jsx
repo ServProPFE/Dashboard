@@ -78,7 +78,7 @@ function App() {
                   </div>
                   <Sidebar />
                   <main className="min-h-screen flex-1 p-4 sm:p-6 lg:p-8">
-                    <div className="mb-4 flex justify-end">
+                    <div className="mb-4 flex justify-start">
                       <div className="relative" ref={notificationsRef}>
                         <button
                           type="button"
