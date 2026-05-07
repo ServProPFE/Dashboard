@@ -78,7 +78,7 @@ const NotificationsManagement = () => {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="group relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-xl shadow-slate-900/5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-sky-200 hover:shadow-2xl hover:shadow-sky-900/10">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white via-white to-sky-50/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white via-white to-sky-50/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-600">Operations Center</p>
@@ -109,7 +109,6 @@ const NotificationsManagement = () => {
           <span className="rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">
             {notifications.length} {t('notifications.total', { defaultValue: 'total' })}
           </span>
-        </div>
         </div>
       </div>
 
